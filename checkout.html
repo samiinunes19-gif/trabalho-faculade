@@ -61,6 +61,11 @@
   .two{display:block}
   @media(min-width:560px){.two{display:flex;gap:12px}}
   .two .field{flex:1;min-width:0}
+  .cep-msg{display:block;margin-top:6px;font-size:.78rem;font-weight:700}
+  .cep-msg.load{color:var(--suave)} .cep-msg.ok{color:var(--verde)} .cep-msg.err{color:var(--vermelho)}
+  .field input:disabled{background:var(--bg);color:var(--suave-2)}
+  .chkline{display:flex;align-items:center;gap:9px;margin:2px 0 13px;font-size:.9rem;font-weight:600;color:var(--texto);cursor:pointer;user-select:none}
+  .chkline input{width:18px;height:18px;flex:0 0 auto;accent-color:var(--escuro);cursor:pointer}
 
   .pm-tabs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
   .pm-tab{display:flex;align-items:center;gap:10px;min-width:0;padding:14px;border:1.5px solid var(--linha-2);border-radius:13px;font-weight:700;font-size:.95rem;color:var(--texto);transition:.12s;background:var(--card)}
@@ -184,9 +189,20 @@ function render(){
     <div class="col-form">
       <div class="card">
         <h2><span class="n">1</span>Endereço de entrega</h2>
-        <div class="two"><div class="field"><label>CEP <span class="opt">(opcional)</span></label><input id="fCep" inputmode="numeric" placeholder="00000-000" value="${esc(d.cep||'')}"></div>
-          <div class="field"><label>Bairro</label><input id="fBairro" placeholder="Seu bairro" value="${esc(d.bairro||'')}"></div></div>
-        <div class="field"><label>Endereço (rua, número e complemento)</label><input id="fEnd" placeholder="Ex.: Rua das Flores, 123, ap 4" value="${esc(d.end||'')}"></div>
+        <div class="field"><label>CEP</label>
+          <input id="fCep" inputmode="numeric" maxlength="9" placeholder="00000-000" value="${esc(d.cep||'')}" oninput="cepInput()">
+          <span class="cep-msg" id="cepMsg"></span>
+        </div>
+        <div class="field"><label>Rua / Logradouro</label><input id="fRua" placeholder="Rua, avenida…" value="${esc(d.rua||'')}"></div>
+        <div class="two">
+          <div class="field"><label>Número</label><input id="fNum" inputmode="numeric" placeholder="123" value="${esc(d.num||'')}" ${d.semNum?'disabled':''}></div>
+          <div class="field"><label>Complemento <span class="opt">(opcional)</span></label><input id="fComp" placeholder="Apto, bloco…" value="${esc(d.comp||'')}"></div>
+        </div>
+        <label class="chkline"><input type="checkbox" id="fSemNum" ${d.semNum?'checked':''} onchange="toggleSemNum()"><span>Endereço sem número (S/N)</span></label>
+        <div class="two">
+          <div class="field"><label>Bairro</label><input id="fBairro" placeholder="Seu bairro" value="${esc(d.bairro||'')}"></div>
+          <div class="field"><label>Cidade / UF</label><input id="fCidade" placeholder="Cidade - UF" value="${esc(d.cidade||'')}"></div>
+        </div>
         <div class="field"><label>Ponto de referência <span class="opt">(opcional)</span></label><input id="fRef" placeholder="Ex.: próximo ao mercado" value="${esc(d.ref||'')}"></div>
       </div>
       <div class="card">
@@ -245,15 +261,52 @@ function camposCartao(){ const total=totalGeral();
 }
 
 /* ======= PAGAR ======= */
+function temSemNum(){ const c=document.getElementById("fSemNum"); return !!(c&&c.checked); }
+function montarEndereco(){
+  const num = temSemNum() ? "S/N" : v("fNum");
+  let p=[v("fRua"), num, v("fComp")].filter(Boolean).join(", ");
+  if(v("fBairro")) p += " - "+v("fBairro");
+  if(v("fCidade")) p += " - "+v("fCidade");
+  if(v("fCep")) p += " (CEP "+v("fCep")+")";
+  return p;
+}
 function salvarDados(){
-  const d={nome:v("fNome"),tel:v("fTel"),cpf:v("fCpf"),email:v("fEmail"),end:v("fEnd"),bairro:v("fBairro"),cep:v("fCep"),ref:v("fRef")};
+  const d={ nome:v("fNome"),tel:v("fTel"),cpf:v("fCpf"),email:v("fEmail"),
+    cep:v("fCep"), rua:v("fRua"), num:v("fNum"), semNum:temSemNum(), comp:v("fComp"),
+    bairro:v("fBairro"), cidade:v("fCidade"), ref:v("fRef"), end:montarEndereco() };
   localStorage.setItem("gelou_dados",JSON.stringify(d)); return d;
 }
 function validarDados(){
-  if(!v("fNome")||!v("fTel")||!v("fEnd")){ toast("Preencha nome, telefone e endereço"); return false; }
+  if(!v("fRua")){ toast("Informe a rua do endereço"); return false; }
+  if(!temSemNum() && !v("fNum")){ toast("Informe o número (ou marque 'sem número')"); return false; }
+  if(!v("fNome")||!v("fTel")){ toast("Preencha nome e telefone"); return false; }
   if(v("fCpf").replace(/\D/g,"").length!==11){ toast("Informe um CPF válido"); return false; }
   if(!/^\S+@\S+\.\S+$/.test(v("fEmail"))){ toast("Informe um e-mail válido"); return false; }
   return true;
+}
+function cepInput(){
+  const el=document.getElementById("fCep");
+  let d=(el.value||"").replace(/\D/g,"").slice(0,8);
+  el.value = d.length>5 ? d.slice(0,5)+"-"+d.slice(5) : d;
+  if(d.length===8) buscarCep(d);
+}
+function buscarCep(cep){
+  const msg=document.getElementById("cepMsg");
+  if(msg){ msg.textContent="buscando endereço…"; msg.className="cep-msg load"; }
+  fetch("https://viacep.com.br/ws/"+cep+"/json/").then(r=>r.json()).then(dd=>{
+    if(dd.erro){ if(msg){ msg.textContent="CEP não encontrado"; msg.className="cep-msg err"; } return; }
+    if(dd.logradouro) setVal("fRua", dd.logradouro);
+    if(dd.bairro) setVal("fBairro", dd.bairro);
+    if(dd.localidade) setVal("fCidade", dd.localidade + (dd.uf?" - "+dd.uf:""));
+    if(msg){ msg.textContent="endereço preenchido ✓"; msg.className="cep-msg ok"; }
+    const n=document.getElementById("fNum"); if(n && !n.disabled && !n.value) n.focus();
+  }).catch(()=>{ if(msg){ msg.textContent="não foi possível buscar o CEP"; msg.className="cep-msg err"; } });
+}
+function setVal(id,val){ const el=document.getElementById(id); if(el) el.value=val; }
+function toggleSemNum(){
+  const c=document.getElementById("fSemNum"), n=document.getElementById("fNum");
+  if(!n) return;
+  if(c.checked){ n.value=""; n.disabled=true; n.placeholder="S/N"; } else { n.disabled=false; n.placeholder="123"; }
 }
 function pagar(){
   if(!validarDados()) return;

@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#15171a">
-<title>Checkout seguro · Distribuidora Zé</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FFCB05'/%3E%3Ctext x='16' y='23' font-size='17' font-weight='800' text-anchor='middle' font-family='Arial' fill='%231a1a1a'%3EZé%3C/text%3E%3C/svg%3E">
+<title>Checkout seguro · Distribuidora do Gole</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FFCB05'/%3E%3Ctext x='16' y='23' font-size='17' font-weight='800' text-anchor='middle' font-family='Arial' fill='%231a1a1a'%3EDG%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -134,7 +134,7 @@
 
 <div class="top"><div class="top-in">
   <a class="back" href="index.html"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg> Voltar à loja</a>
-  <div class="brand"><span class="mark">Zé</span>Distribuidora Zé</div>
+  <div class="brand"><span class="mark">DG</span>Distribuidora do Gole</div>
 </div></div>
 
 <div class="steps" id="steps">
@@ -149,7 +149,7 @@
 
 <script src="produtos.js"></script>
 <script>
-const TAXA_ENTREGA=6.90, FRETE_GRATIS_ACIMA=30.00, NOME_LOJA="Distribuidora Zé";
+const TAXA_ENTREGA=6.90, FRETE_GRATIS_ACIMA=30.00, NOME_LOJA="Distribuidora do Gole";
 const DEMO_MODE = location.protocol==="file:" || ["localhost","127.0.0.1"].includes(location.hostname);
 const API_BASE="/api";
 const PRODUTOS=(window.DADOS&&window.DADOS.produtos)||[];
@@ -246,6 +246,7 @@ function render(){
             <span class="bchip">${logoElo()}</span>
           </div>
           <div class="secure-note"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Pagamento processado em ambiente criptografado. Não guardamos os dados do seu cartão.</div>
+          <div class="secure-note" style="margin-top:10px"><a href="politica-de-privacidade.html" style="color:var(--verde-2);font-weight:700">Política de Privacidade</a> · <a href="termos-de-uso.html" style="color:var(--verde-2);font-weight:700">Termos de Uso</a> · Apenas +18</div>
         </div>
       </div>
     </aside>
@@ -363,7 +364,7 @@ function pagarPix(){
   const total=totalGeral();
   document.getElementById("wrap").innerHTML=`<div class="stage"><div class="spin"></div><p>Gerando cobrança Pix segura…</p></div>`;
   if(DEMO_MODE){
-    const code="00020126580014br.gov.bcb.pix0136distribuidora-ze"+total.toFixed(2).replace('.','')+"5204000053039865802BR5915DISTRIBUIDORA ZE6009SAO PAULO62070503***6304";
+    const code="00020126580014br.gov.bcb.pix0136distribuidora-gole"+total.toFixed(2).replace('.','')+"5204000053039865802BR5921DISTRIBUIDORA DO GOLE6009SAO PAULO62070503***6304";
     setTimeout(()=>{ telaPix(code,null); simularPagamentoDemo(); },700); return;
   }
   fetch(API_BASE+"/pix-receive",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:total,customer:clientePayload(),items:itensPayload()})})

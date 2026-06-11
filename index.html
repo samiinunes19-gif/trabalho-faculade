@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#15171a">
-<meta name="description" content="Gelou — bebidas geladas com entrega expressa. Cervejas, destilados, vinhos, energéticos e muito mais na sua porta.">
-<title>Distribuidora Zé · Bebida gelada na sua porta em minutos</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FFCB05'/%3E%3Ctext x='16' y='23' font-size='20' font-weight='800' text-anchor='middle' font-family='Arial' fill='%231a1a1a'%3EG%3C/text%3E%3C/svg%3E">
+<meta name="description" content="Distribuidora do Gole é um marketplace que conecta você às melhores distribuidoras de bebidas da sua região. Cervejas, vinhos, destilados e mais com entrega rápida. Venda permitida apenas para maiores de 18 anos.">
+<title>Distribuidora do Gole · Marketplace de bebidas com entrega na sua região</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FFCB05'/%3E%3Ctext x='16' y='23' font-size='20' font-weight='800' text-anchor='middle' font-family='Arial' fill='%231a1a1a'%3EDG%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -71,7 +71,7 @@
 
   /* ---------- HERO ---------- */
   .hero{max-width:var(--max);margin:14px auto 0;padding:0 16px}
-  .hero-inner{position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(100deg,rgba(15,17,20,.95) 0%,rgba(15,17,20,.8) 48%,rgba(15,17,20,.58) 100%),url('https://i.ibb.co/qYQGfBsL/eb70e4215121863-Y3-Jvc-Cwz-OTU0-LDMw-OTMs-MCww.png') center/cover no-repeat,#15171a;padding:30px 22px 28px;color:#fff;isolation:isolate}
+  .hero-inner{position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(100deg,rgba(15,17,20,.95) 0%,rgba(15,17,20,.8) 48%,rgba(15,17,20,.58) 100%),url('https://i.ibb.co/SXxVCYkj/download-43.png') center/cover no-repeat,#15171a;padding:30px 22px 28px;color:#fff;isolation:isolate}
   .hero-inner::before{content:"";position:absolute;width:240px;height:240px;right:-70px;top:-90px;border-radius:50%;background:radial-gradient(circle,rgba(255,203,5,.55),rgba(255,203,5,0) 70%);z-index:-1}
   .hero-inner::after{content:"";position:absolute;width:160px;height:160px;left:-50px;bottom:-70px;border-radius:50%;background:radial-gradient(circle,rgba(19,160,92,.35),rgba(19,160,92,0) 70%);z-index:-1}
   .hero .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amarelo);background:rgba(255,203,5,.12);padding:6px 11px;border-radius:999px}
@@ -246,7 +246,10 @@
   footer{max-width:var(--max);margin:30px auto 0;padding:24px 16px 8px;border-top:1px solid var(--linha);text-align:center}
   footer .fbrand{font-weight:800;font-size:1.1rem;color:var(--escuro);letter-spacing:-.04em}
   footer p{font-size:.8rem;color:var(--suave);margin-top:6px;font-weight:500}
-  footer .legal{font-size:.74rem;color:var(--suave-2);margin-top:12px;max-width:440px;margin-left:auto;margin-right:auto}
+  footer .finfo{font-size:.76rem;color:var(--suave-2);margin-top:10px;line-height:1.5}
+  footer .flinks{margin-top:12px;font-size:.83rem;font-weight:700}
+  footer .flinks a{color:var(--verde-2)}
+  footer .legal{font-size:.74rem;color:var(--suave-2);margin-top:14px;max-width:460px;margin-left:auto;margin-right:auto}
   .toast{position:fixed;left:50%;bottom:108px;transform:translateX(-50%) translateY(20px);background:var(--escuro);color:#fff;font-size:.88rem;font-weight:600;padding:12px 20px;border-radius:13px;box-shadow:var(--sombra-lg);z-index:90;opacity:0;transition:.25s;pointer-events:none}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
@@ -285,7 +288,7 @@
 <header>
  <div class="hwrap">
   <div class="topbar">
-    <button class="brand" onclick="goHome()"><span class="mark">Zé</span>Distribuidora Zé</button>
+    <button class="brand" onclick="goHome()"><span class="mark">DG</span>Distribuidora do Gole</button>
     <button class="cart-btn" onclick="abrirCarrinho()" aria-label="Carrinho">
       <svg viewBox="0 0 24 24"><path d="M5 7h14l-1.2 9.5a2 2 0 0 1-2 1.7H8.2a2 2 0 0 1-2-1.7L5 7Z"/><path d="M8.5 7a3.5 3.5 0 0 1 7 0"/></svg>
       <span class="cart-count" id="cartCount">0</span>
@@ -299,7 +302,7 @@
     <div class="eta"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Entrega em até <b>40 min</b></span></div>
   </div>
   <div class="hero-banner">
-    <img src="https://i.ibb.co/6JbLfq4D/download-39.png" alt="Banner promocional" loading="eager" onload="ajustarHeader()" onerror="this.parentElement.style.display='none';ajustarHeader()">
+    <img src="https://i.ibb.co/4ZM4WFm9/download-42.png" alt="Banner promocional" loading="eager" onload="ajustarHeader()" onerror="this.parentElement.style.display='none';ajustarHeader()">
   </div>
   <div class="searchwrap">
     <div class="search">
@@ -315,9 +318,11 @@
 <div id="view"></div>
 
 <footer>
-  <div class="fbrand">Distribuidora Zé</div>
-  <p>Bebidas geladas com entrega expressa · Aberto todos os dias</p>
-  <p class="legal">A venda e o consumo de bebidas alcoólicas são proibidos para menores de 18 anos. Beba com moderação. Se for dirigir, não beba.</p>
+  <div class="fbrand">Distribuidora do Gole</div>
+  <p>Marketplace de bebidas — conectamos você às melhores distribuidoras da sua região, com entrega rápida.</p>
+  <p class="finfo">[RAZÃO SOCIAL] · CNPJ [00.000.000/0000-00] · [Cidade/UF]<br>Atendimento: [email@dominio] · [telefone/WhatsApp]</p>
+  <div class="flinks"><a href="politica-de-privacidade.html">Política de Privacidade</a> · <a href="termos-de-uso.html">Termos de Uso</a></div>
+  <p class="legal">A venda e o consumo de bebidas alcoólicas são proibidos para menores de 18 anos (Lei 13.106/2015). Beba com moderação. Se for dirigir, não beba.</p>
 </footer>
 
 <div class="checkout-bar" id="checkoutBar">
@@ -348,7 +353,7 @@
 /* ============ CONFIGURAÇÃO ============ */
 const TAXA_ENTREGA = 6.90;
 const FRETE_GRATIS_ACIMA = 30.00;
-const NOME_LOJA = "Distribuidora Zé";
+const NOME_LOJA = "Distribuidora do Gole";
 const POR_PAGINA = 24;               // grid de categoria/busca
 const NO_CARROSSEL = 14;             // itens por carrossel na home
 const DEMO_MODE = location.protocol === "file:";  // file:// = demonstração; https (Vercel) = cobrança real
@@ -657,7 +662,7 @@ function pixView(code,url){
 function gerarPix(total){
   const area=document.getElementById("pixArea"); if(!area)return;
   if(DEMO_MODE){
-    const code="00020126580014br.gov.bcb.pix0136distribuidora-ze"+total.toFixed(2).replace('.','')+"5204000053039865802BR5915DISTRIBUIDORA ZE6009SAO PAULO62070503***6304";
+    const code="00020126580014br.gov.bcb.pix0136distribuidora-gole"+total.toFixed(2).replace('.','')+"5204000053039865802BR5921DISTRIBUIDORA DO GOLE6009SAO PAULO62070503***6304";
     area.innerHTML=pixView(code,null);
     return;
   }

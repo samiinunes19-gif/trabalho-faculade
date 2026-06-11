@@ -91,8 +91,10 @@
   .row-head{display:flex;align-items:center;justify-content:space-between;padding:0 16px 12px}
   .row-head h2{font-size:1.24rem;color:var(--escuro)}
   .row-head .sub{display:block;font-size:.8rem;color:var(--suave-2);font-weight:500;margin-top:1px;letter-spacing:-.01em}
-  .vertodos{display:inline-flex;align-items:center;gap:3px;font-size:.86rem;font-weight:700;color:var(--verde-2);flex:0 0 auto}
-  .vertodos svg{width:15px;height:15px;stroke:currentColor;stroke-width:2.4;fill:none}
+  .vertodos{display:inline-flex;align-items:center;gap:7px;font-size:.83rem;font-weight:800;color:var(--verde-2);background:#e7f6ee;border:1px solid #bfe6d0;padding:7px 12px;border-radius:999px;flex:0 0 auto;transition:.12s}
+  .vertodos:active{transform:scale(.96)}
+  .vertodos .qt{background:var(--verde);color:#fff;font-size:.72rem;font-weight:800;padding:1px 8px;border-radius:999px;line-height:1.6}
+  .vertodos svg{width:14px;height:14px;stroke:currentColor;stroke-width:2.6;fill:none}
   .scroller{display:flex;gap:12px;overflow-x:auto;padding:2px 16px 6px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
   .scroller .prod{flex:0 0 158px;scroll-snap-align:start}
 
@@ -433,14 +435,14 @@ function renderHome(root){
   let html = heroHTML();
   // Ofertas — todas, no carrossel
   const ofertas = ordenar(PRODUTOS.filter(p=>p.cat==="ofertas"));
-  if(ofertas.length) html += rowHTML("Ofertas", "Aproveite enquanto duram", "ofertas", ofertas);
+  if(ofertas.length) html += rowHTML("Ofertas", "Aproveite enquanto duram", "ofertas", ofertas, ofertas.length);
   // Mais vendidos
   const top = ordenar(PRODUTOS.filter(p=>p.top && p.cat!=="ofertas")).slice(0,NO_CARROSSEL);
-  if(top.length) html += rowHTML("Mais vendidos", "Os queridinhos da galera", null, top);
+  if(top.length) html += rowHTML("Mais vendidos", "Os queridinhos da galera", null, top, 0);
   // Uma linha por categoria (exceto ofertas)
   CATEGORIAS.filter(c=>c.slug!=="ofertas").forEach(c=>{
-    const itens=ordenar(PRODUTOS.filter(p=>p.cat===c.slug)).slice(0,NO_CARROSSEL);
-    if(itens.length) html += rowHTML(c.nome, null, c.slug, itens);
+    const todos=ordenar(PRODUTOS.filter(p=>p.cat===c.slug));
+    if(todos.length) html += rowHTML(c.nome, null, c.slug, todos.slice(0,NO_CARROSSEL), todos.length);
   });
   root.innerHTML = html;
   bindHero();
@@ -459,8 +461,8 @@ function heroHTML(){
   </div></section>`;
 }
 function bindHero(){ const b=document.getElementById("heroBtn"); if(b) b.onclick=()=>setCat("ofertas"); }
-function rowHTML(titulo, sub, slug, itens){
-  const ver = slug ? `<button class="vertodos" onclick="setCat('${slug}')">Ver todos <svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>` : "";
+function rowHTML(titulo, sub, slug, itens, total){
+  const ver = slug ? `<button class="vertodos" onclick="setCat('${slug}')">Ver todos <span class="qt">${total}</span><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button>` : "";
   return `<section class="row">
     <div class="row-head"><div><h2>${esc(titulo)}</h2>${sub?`<span class="sub">${esc(sub)}</span>`:""}</div>${ver}</div>
     <div class="scroller">${itens.map(cardHTML).join("")}</div>

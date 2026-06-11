@@ -26,3 +26,6 @@ download-images.ps1
 _img_check.txt
 _download_report.txt
 produtos.js.bak
+
+retry-images.ps1
+_retry_report.txt

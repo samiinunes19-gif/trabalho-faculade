@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- TROQUE "https://SEUDOMINIO.com" pelo seu domínio real (ex.: https://www.sualoja.com.br) -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://SEUDOMINIO.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://SEUDOMINIO.com/ofertas</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://SEUDOMINIO.com/cervejas</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://SEUDOMINIO.com/destilados</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
-  <url><loc>https://SEUDOMINIO.com/drinks-prontos</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://SEUDOMINIO.com/chopp</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://SEUDOMINIO.com/energeticos</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://SEUDOMINIO.com/refrigerantes</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://SEUDOMINIO.com/aguas-e-gelo</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://SEUDOMINIO.com/vinhos</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://SEUDOMINIO.com/nao-alcoolicos</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://SEUDOMINIO.com/cigarros</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://SEUDOMINIO.com/conveniencia</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://SEUDOMINIO.com/sobremesas</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://SEUDOMINIO.com/churrasco</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.distribuidoraonline-24.site/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
+  <url><loc>https://www.distribuidoraonline-24.site/ofertas</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
+  <url><loc>https://www.distribuidoraonline-24.site/cervejas</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.distribuidoraonline-24.site/destilados</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://www.distribuidoraonline-24.site/drinks-prontos</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.distribuidoraonline-24.site/chopp</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.distribuidoraonline-24.site/energeticos</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.distribuidoraonline-24.site/refrigerantes</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.distribuidoraonline-24.site/aguas-e-gelo</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.distribuidoraonline-24.site/vinhos</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://www.distribuidoraonline-24.site/nao-alcoolicos</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.distribuidoraonline-24.site/cigarros</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.distribuidoraonline-24.site/conveniencia</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.distribuidoraonline-24.site/sobremesas</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://www.distribuidoraonline-24.site/churrasco</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
 </urlset>

@@ -131,7 +131,7 @@
 </div></div>
 
 <div class="steps" id="steps">
-  <div class="st on"><span class="num">1</span>Dados</div><div class="bar"></div>
+  <div class="st on"><span class="num">1</span>Entrega</div><div class="bar"></div>
   <div class="st on"><span class="num">2</span>Pagamento</div><div class="bar"></div>
   <div class="st"><span class="num">3</span>Confirmação</div>
 </div>
@@ -183,16 +183,21 @@ function render(){
   wrap.innerHTML=`<div class="grid">
     <div class="col-form">
       <div class="card">
-        <h2><span class="n">1</span>Dados para entrega</h2>
+        <h2><span class="n">1</span>Endereço de entrega</h2>
+        <div class="two"><div class="field"><label>CEP <span class="opt">(opcional)</span></label><input id="fCep" inputmode="numeric" placeholder="00000-000" value="${esc(d.cep||'')}"></div>
+          <div class="field"><label>Bairro</label><input id="fBairro" placeholder="Seu bairro" value="${esc(d.bairro||'')}"></div></div>
+        <div class="field"><label>Endereço (rua, número e complemento)</label><input id="fEnd" placeholder="Ex.: Rua das Flores, 123, ap 4" value="${esc(d.end||'')}"></div>
+        <div class="field"><label>Ponto de referência <span class="opt">(opcional)</span></label><input id="fRef" placeholder="Ex.: próximo ao mercado" value="${esc(d.ref||'')}"></div>
+      </div>
+      <div class="card">
+        <h2><span class="n">2</span>Seus dados</h2>
         <div class="field"><label>Nome completo</label><input id="fNome" placeholder="Seu nome" value="${esc(d.nome)}"></div>
         <div class="two"><div class="field"><label>Telefone</label><input id="fTel" type="tel" inputmode="tel" placeholder="(00) 00000-0000" value="${esc(d.tel)}"></div>
           <div class="field"><label>CPF</label><input id="fCpf" inputmode="numeric" placeholder="000.000.000-00" value="${esc(d.cpf||'')}"></div></div>
         <div class="field"><label>E-mail</label><input id="fEmail" type="email" inputmode="email" placeholder="voce@email.com" value="${esc(d.email||'')}"></div>
-        <div class="field"><label>Endereço</label><input id="fEnd" placeholder="Rua, número e complemento" value="${esc(d.end||localStorage.getItem('gelou_local')||'')}"></div>
-        <div class="field"><label>Bairro / Referência <span class="opt">(opcional)</span></label><input id="fBairro" placeholder="Bairro e ponto de referência" value="${esc(d.bairro)}"></div>
       </div>
       <div class="card">
-        <h2><span class="n">2</span>Forma de pagamento</h2>
+        <h2><span class="n">3</span>Forma de pagamento</h2>
         <div class="pm-tabs">
           <button class="pm-tab ${metodo==='Pix'?'on':''}" data-m="Pix" onclick="setMetodo('Pix')"><span class="ic">${logoPix(24)}</span>Pix</button>
           <button class="pm-tab ${metodo==='Cartão'?'on':''}" data-m="Cartão" onclick="setMetodo('Cartão')"><span class="ic"><svg viewBox="0 0 24 24" style="width:24px;height:24px;stroke:var(--escuro);stroke-width:2;fill:none"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>Cartão</button>
@@ -241,7 +246,7 @@ function camposCartao(){ const total=totalGeral();
 
 /* ======= PAGAR ======= */
 function salvarDados(){
-  const d={nome:v("fNome"),tel:v("fTel"),cpf:v("fCpf"),email:v("fEmail"),end:v("fEnd"),bairro:v("fBairro")};
+  const d={nome:v("fNome"),tel:v("fTel"),cpf:v("fCpf"),email:v("fEmail"),end:v("fEnd"),bairro:v("fBairro"),cep:v("fCep"),ref:v("fRef")};
   localStorage.setItem("gelou_dados",JSON.stringify(d)); return d;
 }
 function validarDados(){

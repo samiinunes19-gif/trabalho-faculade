@@ -11,9 +11,13 @@ while ($listener.IsListening) {
   if ($path -eq "/") { $path = "/index.html" }
   $file = Join-Path $root ($path.TrimStart("/").Replace("/","\"))
   try {
+    $ext = [System.IO.Path]::GetExtension($file).ToLower()
+    # Fallback SPA: caminho sem extensao e sem arquivo -> serve index.html (ex.: /cervejas)
+    if (-not (Test-Path $file -PathType Leaf) -and $ext -eq "" -and -not $path.StartsWith("/api")) {
+      $file = Join-Path $root "index.html"; $ext = ".html"
+    }
     if (Test-Path $file -PathType Leaf) {
       $bytes = [System.IO.File]::ReadAllBytes($file)
-      $ext = [System.IO.Path]::GetExtension($file).ToLower()
       if ($mime.ContainsKey($ext)) { $ctx.Response.ContentType = $mime[$ext] }
       $ctx.Response.OutputStream.Write($bytes, 0, $bytes.Length)
     } else {

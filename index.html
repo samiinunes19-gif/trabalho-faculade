@@ -292,11 +292,10 @@
     </button>
   </div>
   <div class="locrow">
-    <button class="loc" onclick="definirEndereco()" aria-label="Definir endereço de entrega">
+    <div class="loc">
       <span class="loc-ic"><svg viewBox="0 0 24 24"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
       <span class="loc-txt"><small>Entregando agora</small><b id="locVal">em sua região</b></span>
-      <svg class="loc-chev" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
-    </button>
+    </div>
     <div class="eta"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Entrega em até <b>40 min</b></span></div>
   </div>
   <div class="hero-banner">
@@ -406,8 +405,12 @@ function renderCats(){
 }
 
 /* ============ NAVEGAÇÃO ============ */
-function goHome(){ view="home"; busca=""; document.getElementById("busca").value=""; renderCats(); render(); window.scrollTo({top:0,behavior:"smooth"}); }
-function setCat(slug){ view="cat"; catAtiva=slug; busca=""; document.getElementById("busca").value=""; limite=POR_PAGINA; renderCats(); render(); window.scrollTo({top:0,behavior:"smooth"}); }
+const SLUGS = new Set(CATEGORIAS.map(c=>c.slug));
+function setURL(p){ try{ history.pushState({}, "", p); }catch(e){} }
+function aplicarRota(){ const p=decodeURIComponent((location.pathname||"").replace(/^\/+|\/+$/g,"")).toLowerCase();
+  if(SLUGS.has(p)){ view="cat"; catAtiva=p; busca=""; } else { view="home"; } }
+function goHome(){ view="home"; busca=""; const b=document.getElementById("busca"); if(b)b.value=""; setURL("/"); renderCats(); render(); window.scrollTo({top:0,behavior:"smooth"}); }
+function setCat(slug){ view="cat"; catAtiva=slug; busca=""; const b=document.getElementById("busca"); if(b)b.value=""; limite=POR_PAGINA; setURL("/"+slug); renderCats(); render(); window.scrollTo({top:0,behavior:"smooth"}); }
 let buscaT;
 function onBusca(){ clearTimeout(buscaT); buscaT=setTimeout(()=>{ const q=document.getElementById("busca").value.trim(); busca=q; view = q ? "busca" : "home"; limite=POR_PAGINA; renderCats(); render(); },180); }
 
@@ -770,8 +773,10 @@ function montarSite(){
   if(document.body.dataset.mounted) return;
   document.getElementById("siteRoot").appendChild(document.getElementById("siteTpl").content.cloneNode(true));
   document.body.dataset.mounted="1";
+  aplicarRota();
   renderCats(); render(); atualizar(); ajustarHeader();
 }
+window.addEventListener("popstate", ()=>{ if(!document.body.dataset.mounted) return; aplicarRota(); const b=document.getElementById("busca"); if(b)b.value=""; renderCats(); render(); window.scrollTo({top:0}); });
 function ageNo(){ document.getElementById("agCard").innerHTML='<div class="ag-badge">+18</div><h2>Verificação de idade</h2><p class="ag-deny">Acesso permitido apenas para maiores de 18 anos.</p>'; }
 function ajustarHeader(){ document.body.style.paddingTop="0"; }
 window.addEventListener("resize", ajustarHeader);

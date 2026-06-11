@@ -30,7 +30,7 @@
   .scroller,.cat-strip{scrollbar-width:none}
 
   /* ---------- HEADER ---------- */
-  header{position:fixed;top:0;left:0;right:0;z-index:50;background:#fff;box-shadow:var(--sombra-sm);border-bottom:1px solid var(--linha)}
+  header{position:relative;z-index:50;background:#fff;box-shadow:var(--sombra-sm);border-bottom:1px solid var(--linha)}
   .hwrap{max-width:var(--max);margin:0 auto}
   .topbar{display:flex;align-items:center;gap:12px;padding:12px 16px 10px}
   .brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:1.18rem;letter-spacing:-.04em;color:var(--escuro);white-space:nowrap}
@@ -773,7 +773,7 @@ function montarSite(){
   renderCats(); render(); atualizar(); ajustarHeader();
 }
 function ageNo(){ document.getElementById("agCard").innerHTML='<div class="ag-badge">+18</div><h2>Verificação de idade</h2><p class="ag-deny">Acesso permitido apenas para maiores de 18 anos.</p>'; }
-function ajustarHeader(){ const h=document.querySelector("header"); if(h) document.body.style.paddingTop=h.offsetHeight+"px"; }
+function ajustarHeader(){ document.body.style.paddingTop="0"; }
 window.addEventListener("resize", ajustarHeader);
 if(localStorage.getItem("gelou_age")==="1") montarSite(); ajustarHeader();
 </script>

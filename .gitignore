@@ -1,0 +1,21 @@
+# Backup original (contém .env com chaves e db-export com dados de clientes — NÃO subir)
+_zeup_extract/
+
+# Segredos / variáveis de ambiente reais (subir só o .env.example)
+.env
+.env.*
+!.env.example
+
+# Dependências e build
+node_modules/
+.vercel/
+dist/
+build/
+
+# Ferramentas locais (Claude Code) e servidor de teste
+.claude/
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+*.log

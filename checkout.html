@@ -364,7 +364,7 @@ function pagarPix(){
   document.getElementById("wrap").innerHTML=`<div class="stage"><div class="spin"></div><p>Gerando cobrança Pix segura…</p></div>`;
   if(DEMO_MODE){
     const code="00020126580014br.gov.bcb.pix0136distribuidora-ze"+total.toFixed(2).replace('.','')+"5204000053039865802BR5915DISTRIBUIDORA ZE6009SAO PAULO62070503***6304";
-    setTimeout(()=>telaPix(code,null),700); return;
+    setTimeout(()=>{ telaPix(code,null); simularPagamentoDemo(); },700); return;
   }
   fetch(API_BASE+"/pix-receive",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:total,customer:clientePayload(),items:itensPayload()})})
     .then(r=>r.json()).then(ch=>{ if(ch.error||!ch.pix){ toast("Erro: "+(ch.error||'falha ao gerar Pix')); render(); return; }
@@ -381,7 +381,7 @@ function telaPix(code,url){
     <div class="pix-code"><code id="pixCode">${esc(code)}</code><button onclick="copyPix()">Copiar</button></div>
     <p class="hint">Valor: <b>${brl(total)}</b></p>
     <div class="pstatus" id="pstatus"><span class="pulse-dot"></span>Aguardando pagamento…</div>
-    <div style="margin-top:18px"><button class="pay-btn" style="max-width:360px;margin:0 auto" id="payBtn" onclick="confirmarPix()"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Já fiz o pagamento</button></div>
+    <p class="hint" style="margin-top:14px">A confirmação é <b>automática</b> assim que o pagamento for identificado. Pode deixar esta página aberta.</p>
   </div>`;
 }
 function iniciarPolling(){ pararPolling(); let t=0; pixPoll=setInterval(()=>{ t++; if(t>60){pararPolling();return;}
@@ -390,19 +390,11 @@ function iniciarPolling(){ pararPolling(); let t=0; pixPoll=setInterval(()=>{ t+
     if(st==="paid") sucesso(); else if(["failed","expired","refunded"].includes(st)){pararPolling();toast("Pagamento "+st);}
   }).catch(()=>{}); },5000); }
 function pararPolling(){ if(pixPoll){clearInterval(pixPoll);pixPoll=null;} }
-function confirmarPix(){
-  const st=document.getElementById("pstatus"), b=document.getElementById("payBtn");
-  if(DEMO_MODE){
-    if(st) st.innerHTML=`<span class="pulse-dot"></span>Pagamento recebido, processando…`;
-    if(b){b.disabled=true;b.innerHTML=`<span class="spin" style="width:18px;height:18px;border-width:3px;margin:0;border-color:rgba(255,255,255,.45);border-top-color:#fff"></span>Processando…`;}
-    setTimeout(()=>{ if(st)st.innerHTML=`<span class="pulse-dot"></span>Pagamento aprovado!`; setTimeout(sucesso,700); },2200);
-    return;
-  }
-  if(!txId){ toast("Aguarde gerar o Pix"); return; }
-  toast("Verificando pagamento…");
-  fetch(API_BASE+"/pix-status?transaction_id="+encodeURIComponent(txId)).then(r=>r.json()).then(d=>{
-    const s=d.transaction&&d.transaction.status; if(s==="paid")sucesso(); else toast("Pagamento ainda não identificado");
-  }).catch(()=>toast("Não foi possível verificar agora"));
+function simularPagamentoDemo(){ // só no modo demonstração: simula o pagamento sendo identificado automaticamente
+  setTimeout(()=>{
+    const st=document.getElementById("pstatus"); if(st) st.innerHTML='<span class="pulse-dot"></span>Pagamento identificado, processando…';
+    setTimeout(()=>{ const st2=document.getElementById("pstatus"); if(st2) st2.innerHTML='<span class="pulse-dot"></span>Pagamento aprovado!'; setTimeout(sucesso,900); },1800);
+  }, 5000);
 }
 
 /* ---- CARTÃO ---- */

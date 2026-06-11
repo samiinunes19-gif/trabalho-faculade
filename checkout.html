@@ -61,6 +61,8 @@
   .two{display:block}
   @media(min-width:560px){.two{display:flex;gap:12px}}
   .two .field{flex:1;min-width:0}
+  .ferr{display:none;margin-top:6px;font-size:.78rem;font-weight:700;color:var(--vermelho)}
+  .field input.inp-erro{border-color:var(--vermelho)!important;box-shadow:0 0 0 3px rgba(226,59,59,.16)}
   .cep-msg{display:block;margin-top:6px;font-size:.78rem;font-weight:700}
   .cep-msg.load{color:var(--suave)} .cep-msg.ok{color:var(--verde)} .cep-msg.err{color:var(--vermelho)}
   .field input:disabled{background:var(--bg);color:var(--suave-2)}
@@ -193,9 +195,9 @@ function render(){
           <input id="fCep" inputmode="numeric" maxlength="9" placeholder="00000-000" value="${esc(d.cep||'')}" oninput="cepInput()">
           <span class="cep-msg" id="cepMsg"></span>
         </div>
-        <div class="field"><label>Rua / Logradouro</label><input id="fRua" placeholder="Rua, avenida…" value="${esc(d.rua||'')}"></div>
+        <div class="field"><label>Rua / Logradouro</label><input id="fRua" placeholder="Rua, avenida…" value="${esc(d.rua||'')}" oninput="setErr2('fRua','')" onblur="valRua()"><small class="ferr" id="e_fRua"></small></div>
         <div class="two">
-          <div class="field"><label>Número</label><input id="fNum" inputmode="numeric" placeholder="123" value="${esc(d.num||'')}" ${d.semNum?'disabled':''}></div>
+          <div class="field"><label>Número</label><input id="fNum" inputmode="numeric" placeholder="123" value="${esc(d.num||'')}" ${d.semNum?'disabled':''} oninput="setErr2('fNum','')"><small class="ferr" id="e_fNum"></small></div>
           <div class="field"><label>Complemento <span class="opt">(opcional)</span></label><input id="fComp" placeholder="Apto, bloco…" value="${esc(d.comp||'')}"></div>
         </div>
         <label class="chkline"><input type="checkbox" id="fSemNum" ${d.semNum?'checked':''} onchange="toggleSemNum()"><span>Endereço sem número (S/N)</span></label>
@@ -207,10 +209,10 @@ function render(){
       </div>
       <div class="card">
         <h2><span class="n">2</span>Seus dados</h2>
-        <div class="field"><label>Nome completo</label><input id="fNome" placeholder="Seu nome" value="${esc(d.nome)}"></div>
-        <div class="two"><div class="field"><label>Telefone</label><input id="fTel" type="tel" inputmode="tel" placeholder="(00) 00000-0000" value="${esc(d.tel)}"></div>
-          <div class="field"><label>CPF</label><input id="fCpf" inputmode="numeric" placeholder="000.000.000-00" value="${esc(d.cpf||'')}"></div></div>
-        <div class="field"><label>E-mail</label><input id="fEmail" type="email" inputmode="email" placeholder="voce@email.com" value="${esc(d.email||'')}"></div>
+        <div class="field"><label>Nome completo</label><input id="fNome" placeholder="Seu nome" value="${esc(d.nome)}" oninput="setErr2('fNome','')" onblur="valNome()"><small class="ferr" id="e_fNome"></small></div>
+        <div class="two"><div class="field"><label>Telefone</label><input id="fTel" type="tel" inputmode="tel" placeholder="(00) 00000-0000" value="${esc(d.tel)}" oninput="liveTel()" onblur="valTel()"><small class="ferr" id="e_fTel"></small></div>
+          <div class="field"><label>CPF</label><input id="fCpf" inputmode="numeric" placeholder="000.000.000-00" value="${esc(d.cpf||'')}" oninput="liveCpf()" onblur="valCpf()"><small class="ferr" id="e_fCpf"></small></div></div>
+        <div class="field"><label>E-mail</label><input id="fEmail" type="email" inputmode="email" placeholder="voce@email.com" value="${esc(d.email||'')}" oninput="liveEmail()" onblur="valEmail()"><small class="ferr" id="e_fEmail"></small></div>
       </div>
       <div class="card">
         <h2><span class="n">3</span>Forma de pagamento</h2>
@@ -276,12 +278,46 @@ function salvarDados(){
     bairro:v("fBairro"), cidade:v("fCidade"), ref:v("fRef"), end:montarEndereco() };
   localStorage.setItem("gelou_dados",JSON.stringify(d)); return d;
 }
+/* ---- máscaras ---- */
+function maskCpf(s){ s=(s||"").replace(/\D/g,"").slice(0,11);
+  if(s.length>9)  return s.replace(/(\d{3})(\d{3})(\d{3})(\d{1,2})/,"$1.$2.$3-$4");
+  if(s.length>6)  return s.replace(/(\d{3})(\d{3})(\d{1,3})/,"$1.$2.$3");
+  if(s.length>3)  return s.replace(/(\d{3})(\d{1,3})/,"$1.$2");
+  return s; }
+function maskTel(s){ s=(s||"").replace(/\D/g,"").slice(0,11);
+  if(s.length>10) return s.replace(/(\d{2})(\d{5})(\d{1,4})/,"($1) $2-$3");
+  if(s.length>6)  return s.replace(/(\d{2})(\d{4,5})(\d{1,4})/,"($1) $2-$3");
+  if(s.length>2)  return s.replace(/(\d{2})(\d{1,5})/,"($1) $2");
+  if(s.length>0)  return s.replace(/(\d{1,2})/,"($1");
+  return s; }
+function cpfValido(cpf){ cpf=(cpf||"").replace(/\D/g,"");
+  if(cpf.length!==11 || /^(\d)\1{10}$/.test(cpf)) return false;
+  let s=0; for(let i=0;i<9;i++) s+=parseInt(cpf[i])*(10-i);
+  let r=11-(s%11); if(r>=10) r=0; if(r!==parseInt(cpf[9])) return false;
+  s=0; for(let i=0;i<10;i++) s+=parseInt(cpf[i])*(11-i);
+  r=11-(s%11); if(r>=10) r=0; return r===parseInt(cpf[10]); }
+
+/* ---- erros por campo ---- */
+function setErr2(id,msg){ const inp=document.getElementById(id); if(inp) inp.classList.toggle("inp-erro",!!msg);
+  const e=document.getElementById("e_"+id); if(e){ e.textContent=msg||""; e.style.display=msg?"block":"none"; } }
+function valNome(){ const ok=v("fNome").length>=2; setErr2("fNome", ok?"":"Informe seu nome completo"); return ok; }
+function valTel(){ const d=v("fTel").replace(/\D/g,""); const ok=d.length>=10&&d.length<=11; setErr2("fTel", ok?"":"Telefone inválido — use DDD + número"); return ok; }
+function valCpf(){ const ok=cpfValido(v("fCpf")); setErr2("fCpf", ok?"":"CPF inválido — confira os números"); return ok; }
+function valEmail(){ const ok=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v("fEmail")); setErr2("fEmail", ok?"":"E-mail inválido"); return ok; }
+function valRua(){ const ok=v("fRua").length>1; setErr2("fRua", ok?"":"Informe a rua"); return ok; }
+function valNum(){ const ok=temSemNum()||v("fNum").length>0; setErr2("fNum", ok?"":"Informe o número ou marque S/N"); return ok; }
+
+/* ---- correção em tempo real ---- */
+function liveTel(){ const el=document.getElementById("fTel"); el.value=maskTel(el.value); const d=el.value.replace(/\D/g,""); if(d.length>=10) valTel(); else setErr2("fTel",""); }
+function liveCpf(){ const el=document.getElementById("fCpf"); el.value=maskCpf(el.value); const d=el.value.replace(/\D/g,""); if(d.length===11) valCpf(); else setErr2("fCpf",""); }
+function liveEmail(){ const s=v("fEmail"); if(s && s.includes("@") && s.includes(".")) valEmail(); else setErr2("fEmail",""); }
+
+function focarErro(id){ const el=document.getElementById(id); if(el){ el.scrollIntoView({behavior:"smooth",block:"center"}); setTimeout(()=>{ try{ el.focus({preventScroll:true}); }catch(e){} },350); } }
 function validarDados(){
-  if(!v("fRua")){ toast("Informe a rua do endereço"); return false; }
-  if(!temSemNum() && !v("fNum")){ toast("Informe o número (ou marque 'sem número')"); return false; }
-  if(!v("fNome")||!v("fTel")){ toast("Preencha nome e telefone"); return false; }
-  if(v("fCpf").replace(/\D/g,"").length!==11){ toast("Informe um CPF válido"); return false; }
-  if(!/^\S+@\S+\.\S+$/.test(v("fEmail"))){ toast("Informe um e-mail válido"); return false; }
+  const checks=[["fRua",valRua],["fNum",valNum],["fNome",valNome],["fTel",valTel],["fCpf",valCpf],["fEmail",valEmail]];
+  let primeiro=null;
+  checks.forEach(([id,fn])=>{ if(!fn() && !primeiro) primeiro=id; });
+  if(primeiro){ focarErro(primeiro); toast("Confira os campos destacados"); return false; }
   return true;
 }
 function cepInput(){

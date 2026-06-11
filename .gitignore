@@ -19,3 +19,10 @@ build/
 .DS_Store
 Thumbs.db
 *.log
+
+# scripts/relatorios de auditoria de imagens
+check-images.ps1
+download-images.ps1
+_img_check.txt
+_download_report.txt
+produtos.js.bak

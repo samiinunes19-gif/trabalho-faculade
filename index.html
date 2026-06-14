@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#15171a">
-<meta name="description" content="Distribuidora do Gole é um marketplace que conecta você às melhores distribuidoras de bebidas da sua região. Cervejas, vinhos, destilados e mais com entrega rápida. Venda permitida apenas para maiores de 18 anos.">
-<title>Distribuidora do Gole · Marketplace de bebidas com entrega na sua região</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FFCB05'/%3E%3Ctext x='16' y='23' font-size='20' font-weight='800' text-anchor='middle' font-family='Arial' fill='%231a1a1a'%3EDG%3C/text%3E%3C/svg%3E">
+<meta name="description" content="Zeca do Gole é um marketplace que conecta você às melhores distribuidoras de bebidas da sua região. Cervejas, vinhos, destilados e mais com entrega rápida. Venda permitida apenas para maiores de 18 anos.">
+<title>Zeca do Gole · Marketplace de bebidas com entrega na sua região</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FFCB05'/%3E%3Ctext x='16' y='23' font-size='20' font-weight='800' text-anchor='middle' font-family='Arial' fill='%231a1a1a'%3EZG%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -71,7 +71,7 @@
 
   /* ---------- HERO ---------- */
   .hero{max-width:var(--max);margin:14px auto 0;padding:0 16px}
-  .hero-inner{position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(100deg,rgba(15,17,20,.95) 0%,rgba(15,17,20,.8) 48%,rgba(15,17,20,.58) 100%),url('https://i.ibb.co/SXxVCYkj/download-43.png') center/cover no-repeat,#15171a;padding:30px 22px 28px;color:#fff;isolation:isolate}
+  .hero-inner{position:relative;overflow:hidden;border-radius:24px;background:linear-gradient(100deg,rgba(15,17,20,.95) 0%,rgba(15,17,20,.82) 46%,rgba(15,17,20,.62) 100%),url('assets/hero-bg.png') center/cover no-repeat,#15171a;padding:30px 22px 28px;color:#fff;isolation:isolate}
   .hero-inner::before{content:"";position:absolute;width:240px;height:240px;right:-70px;top:-90px;border-radius:50%;background:radial-gradient(circle,rgba(255,203,5,.55),rgba(255,203,5,0) 70%);z-index:-1}
   .hero-inner::after{content:"";position:absolute;width:160px;height:160px;left:-50px;bottom:-70px;border-radius:50%;background:radial-gradient(circle,rgba(19,160,92,.35),rgba(19,160,92,0) 70%);z-index:-1}
   .hero .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amarelo);background:rgba(255,203,5,.12);padding:6px 11px;border-radius:999px}
@@ -282,7 +282,7 @@
     <button class="ag-btn no" onclick="ageNo()">Sou menor de 18 anos</button>
   </div>
 </div>
-<script>if(localStorage.getItem("gelou_age")==="1"){document.getElementById("ageGate").classList.add("hidden");}</script>
+<script>if(localStorage.getItem("zeca_age")==="1"){document.getElementById("ageGate").classList.add("hidden");}</script>
 
 <div id="siteRoot"></div>
 <template id="siteTpl">
@@ -290,7 +290,7 @@
 <header>
  <div class="hwrap">
   <div class="topbar">
-    <button class="brand" onclick="goHome()"><span class="mark">DG</span>Distribuidora do Gole</button>
+    <button class="brand" onclick="goHome()"><span class="mark">ZG</span>Zeca do Gole</button>
     <button class="cart-btn" onclick="abrirCarrinho()" aria-label="Carrinho">
       <svg viewBox="0 0 24 24"><path d="M5 7h14l-1.2 9.5a2 2 0 0 1-2 1.7H8.2a2 2 0 0 1-2-1.7L5 7Z"/><path d="M8.5 7a3.5 3.5 0 0 1 7 0"/></svg>
       <span class="cart-count" id="cartCount">0</span>
@@ -302,9 +302,6 @@
       <span class="loc-txt"><small>Entregando agora</small><b id="locVal">em sua região</b></span>
     </div>
     <div class="eta"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Entrega em até <b>40 min</b></span></div>
-  </div>
-  <div class="hero-banner">
-    <img src="https://i.ibb.co/4ZM4WFm9/download-42.png" alt="Banner promocional" loading="eager" onload="ajustarHeader()" onerror="this.parentElement.style.display='none';ajustarHeader()">
   </div>
   <div class="searchwrap">
     <div class="search">
@@ -320,9 +317,9 @@
 <div id="view"></div>
 
 <footer>
-  <div class="fbrand">Distribuidora do Gole</div>
-  <p>Marketplace de bebidas — conectamos você às melhores distribuidoras da sua região, com entrega rápida.</p>
-  <p class="finfo">Marca operada por <b>BETO BEBIDAS LTDA</b> · CNPJ 53.287.517/0001-70<br>Av. Vitória Martins Alves, 20 — Vila Eugênio, Alpercata/MG · CEP 35138-000<br>Atendimento: distribuidoronline@gmail.com · (33) 98408-1653</p>
+  <div class="fbrand">Zeca do Gole</div>
+  <p>A Zeca do Gole é um <b>marketplace</b> que conecta você às melhores distribuidoras de bebidas da sua região. Atuamos como <b>intermediadores</b>: a venda, o estoque e a entrega são feitos pela distribuidora parceira responsável pela sua localidade.</p>
+  <p class="finfo">Marca operada por <b>[RAZÃO SOCIAL]</b> · CNPJ 64.702.977/0001-33<br>Alameda Família Betti, 1034 — Casa 2, Jardim Santa Marta, Sorocaba/SP · CEP 18073-403<br>Atendimento: [E-MAIL] · (15) 3223-6523</p>
   <div class="flinks"><a href="politica-de-privacidade.html">Política de Privacidade</a> · <a href="termos-de-uso.html">Termos de Uso</a></div>
   <p class="legal">A venda e o consumo de bebidas alcoólicas são proibidos para menores de 18 anos (Lei 13.106/2015). Beba com moderação. Se for dirigir, não beba.</p>
 </footer>
@@ -355,7 +352,7 @@
 /* ============ CONFIGURAÇÃO ============ */
 const TAXA_ENTREGA = 6.90;
 const FRETE_GRATIS_ACIMA = 30.00;
-const NOME_LOJA = "Distribuidora do Gole";
+const NOME_LOJA = "Zeca do Gole";
 const POR_PAGINA = 24;               // grid de categoria/busca
 const NO_CARROSSEL = 14;             // itens por carrossel na home
 const DEMO_MODE = location.protocol === "file:";  // file:// = demonstração; https (Vercel) = cobrança real
@@ -371,7 +368,7 @@ let view = "home";        // home | cat | busca
 let catAtiva = "";
 let busca = "";
 let limite = POR_PAGINA;
-let carrinho = JSON.parse(localStorage.getItem("gelou_cart")||"{}");
+let carrinho = JSON.parse(localStorage.getItem("zeca_cart")||"{}");
 let etapa = "carrinho";
 
 const PLACEHOLDER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 130'%3E%3Crect width='100' height='130' fill='%23f4f5f7'/%3E%3Cpath d='M44 28h12v9c7 3 9 9 9 17v42H35V54c0-8 2-14 9-17z' fill='%23d5dae0'/%3E%3C/svg%3E";
@@ -450,8 +447,8 @@ function renderHome(root){
 function heroHTML(){
   return `<section class="hero"><div class="hero-inner">
     <span class="eyebrow"><span class="dot"></span>Entrega em até 40 min</span>
-    <h1>Pediu, <em>gelou</em>, chegou na sua porta</h1>
-    <p>Cerveja, vinho, destilado e energético sempre gelados — preço bom e entrega rápida.</p>
+    <h1>Sua bebida <em>gelada</em>, na porta em minutos</h1>
+    <p>Cervejas, vinhos, destilados e energéticos sempre geladinhos, com preço justo e entrega expressa na sua região.</p>
     <div class="hero-cta"><button class="b1" id="heroBtn">Ver ofertas do dia</button></div>
     <div class="hero-badges">
       <div><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>Entrega rápida</div>
@@ -479,16 +476,16 @@ function renderGrid(root, lista, titulo, comBack){
 function verMais(){ limite+=POR_PAGINA; render(); }
 
 /* ============ LOCALIZAÇÃO ============ */
-function localSalvo(){ return (localStorage.getItem("gelou_local")||"").trim(); }
+function localSalvo(){ return (localStorage.getItem("zeca_local")||"").trim(); }
 function setLocLabel(){
   const el=document.getElementById("locVal"); if(!el)return;
-  const manual=localSalvo(), auto=(localStorage.getItem("gelou_local_auto")||"").trim();
+  const manual=localSalvo(), auto=(localStorage.getItem("zeca_local_auto")||"").trim();
   el.textContent = manual || auto || "Toque para definir";
 }
 function definirEndereco(){
   const atual=localSalvo();
   const novo=prompt("Onde você quer receber seu pedido? (rua e número)", atual);
-  if(novo!==null){ localStorage.setItem("gelou_local", novo.trim()); }
+  if(novo!==null){ localStorage.setItem("zeca_local", novo.trim()); }
 }
 function autoLocalizar(){
   if(localSalvo()){ setLocLabel(); return; }                 // já definiu manualmente, respeita
@@ -512,7 +509,7 @@ function reverseGeo(lat,lon){
       const cidade=a.city||a.town||a.village||a.municipality||"";
       let txt = rua ? (rua+num+(bairro?" - "+bairro:"")) : (bairro?(bairro+(cidade?" - "+cidade:"")):cidade);
       if(!txt && d.display_name) txt=d.display_name.split(",").slice(0,2).join(",").trim();
-      if(txt){ localStorage.setItem("gelou_local_auto", txt); localStorage.setItem("gelou_coords", lat.toFixed(5)+","+lon.toFixed(5)); }
+      if(txt){ localStorage.setItem("zeca_local_auto", txt); localStorage.setItem("zeca_coords", lat.toFixed(5)+","+lon.toFixed(5)); }
       setLocLabel();
     }).catch(()=>ipFallback());
 }
@@ -520,7 +517,7 @@ function ipFallback(){
   if(localSalvo()){ setLocLabel(); return; }
   fetch("https://ipapi.co/json/").then(r=>r.ok?r.json():Promise.reject()).then(d=>{
     if(localSalvo()) return;
-    if(d && d.city) localStorage.setItem("gelou_local_auto", d.city+(d.region_code?" - "+d.region_code:""));
+    if(d && d.city) localStorage.setItem("zeca_local_auto", d.city+(d.region_code?" - "+d.region_code:""));
     setLocLabel();
   }).catch(()=>{ if(!localSalvo()) setLocLabel(); });
 }
@@ -554,7 +551,7 @@ function renderProduto(){
 }
 
 /* ============ CARRINHO ============ */
-function salvar(){ localStorage.setItem("gelou_cart",JSON.stringify(carrinho)); }
+function salvar(){ localStorage.setItem("zeca_cart",JSON.stringify(carrinho)); }
 function addItem(id){ const p=PROD_POR_ID[id]; if(!p||!p.estoque)return; carrinho[id]=(carrinho[id]||0)+1; salvar(); atualizar(); render(); pulse(); toast("Adicionado ao carrinho"); }
 function changeQty(id,d){ carrinho[id]=(carrinho[id]||0)+d; if(carrinho[id]<=0)delete carrinho[id]; salvar(); atualizar(); render(); if(document.getElementById("drawer").classList.contains("show"))renderDrawer(); }
 const totalItens=()=>Object.values(carrinho).reduce((a,b)=>a+b,0);
@@ -586,10 +583,10 @@ function renderDrawer(){
       <div class="row2"><span>Subtotal</span><span>${brl(subtotal())}</span></div>
       <div class="row2"><span>Entrega</span><span>${frete===0?'Grátis':brl(frete)}</span></div>
       <div class="row2 total"><span>Total</span><span>${brl(subtotal()+frete)}</span></div>
-      <button class="btn-primary" onclick="window.location.href='checkout.html#'+encodeURIComponent(localStorage.getItem('gelou_cart')||'{}')"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Finalizar compra com segurança</button>`;
+      <button class="btn-primary" onclick="window.location.href='checkout.html#'+encodeURIComponent(localStorage.getItem('zeca_cart')||'{}')"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>Finalizar compra com segurança</button>`;
   } else {
     title.textContent="Dados da entrega";
-    const d=JSON.parse(localStorage.getItem("gelou_dados")||"{}");
+    const d=JSON.parse(localStorage.getItem("zeca_dados")||"{}");
     body.innerHTML=`<button class="back2" onclick="etapa='carrinho';renderDrawer()"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>Voltar ao carrinho</button>
       <div class="field"><label>Nome completo</label><input id="fNome" placeholder="Seu nome" value="${esc(d.nome)}"></div>
       <div style="display:flex;gap:10px">
@@ -597,7 +594,7 @@ function renderDrawer(){
         <div class="field" style="flex:1;margin-bottom:13px"><label>CPF</label><input id="fCpf" inputmode="numeric" placeholder="000.000.000-00" value="${esc(d.cpf||'')}"></div>
       </div>
       <div class="field"><label>E-mail</label><input id="fEmail" type="email" inputmode="email" placeholder="voce@email.com" value="${esc(d.email||'')}"></div>
-      <div class="field"><label>Endereço</label><input id="fEnd" placeholder="Rua, número e complemento" value="${esc(d.end||localStorage.getItem('gelou_local')||'')}"></div>
+      <div class="field"><label>Endereço</label><input id="fEnd" placeholder="Rua, número e complemento" value="${esc(d.end||localStorage.getItem('zeca_local')||'')}"></div>
       <div class="field"><label>Bairro / Referência <span class="opt">(opcional)</span></label><input id="fBairro" placeholder="Bairro e ponto de referência" value="${esc(d.bairro)}"></div>
       <div class="field"><label>Forma de pagamento</label><div class="pay-opts">
         <label><input type="radio" name="pag" value="Pix" checked><span class="pm"><span class="pm-ic">${pixLogo()}</span>Pix</span></label>
@@ -617,7 +614,7 @@ function irParaPagamento(){
   if(cpf.replace(/\D/g,"").length!==11){ toast("Informe um CPF válido"); return; }
   if(!/^\S+@\S+\.\S+$/.test(email)){ toast("Informe um e-mail válido"); return; }
   pagSel=document.querySelector('input[name="pag"]:checked').value;
-  localStorage.setItem("gelou_dados",JSON.stringify({nome,tel,cpf,email,end,bairro,obs}));
+  localStorage.setItem("zeca_dados",JSON.stringify({nome,tel,cpf,email,end,bairro,obs}));
   etapa="pagamento"; renderDrawer(); document.getElementById("drawerBody").scrollTop=0;
 }
 function renderPagamento(body,foot,title){
@@ -648,7 +645,7 @@ function renderPagamento(body,foot,title){
 
 /* ---- PIX ---- */
 function clientePayload(){
-  const d=JSON.parse(localStorage.getItem("gelou_dados")||"{}");
+  const d=JSON.parse(localStorage.getItem("zeca_dados")||"{}");
   return { name:d.nome||"", email:d.email||"", phone:(d.tel||"").replace(/\D/g,""), document:{ number:(d.cpf||"").replace(/\D/g,""), type:"cpf" } };
 }
 function itensPayload(){
@@ -664,7 +661,7 @@ function pixView(code,url){
 function gerarPix(total){
   const area=document.getElementById("pixArea"); if(!area)return;
   if(DEMO_MODE){
-    const code="00020126580014br.gov.bcb.pix0136distribuidora-gole"+total.toFixed(2).replace('.','')+"5204000053039865802BR5921DISTRIBUIDORA DO GOLE6009SAO PAULO62070503***6304";
+    const code="00020126580014br.gov.bcb.pix0136zeca-do-gole"+total.toFixed(2).replace('.','')+"5204000053039865802BR5912ZECA DO GOLE6009SAO PAULO62070503***6304";
     area.innerHTML=pixView(code,null);
     return;
   }
@@ -734,7 +731,7 @@ async function finalizarCartao(){
 function confirmarSucesso(){
   pararPolling();
   const itens=totalItens(), total=subtotal()+freteAtual();
-  const d=JSON.parse(localStorage.getItem("gelou_dados")||"{}");
+  const d=JSON.parse(localStorage.getItem("zeca_dados")||"{}");
   ultimoPedido={ numero:Math.floor(1000+Math.random()*9000), total, pag:pagSel, end:d.end||"", itens };
   carrinho={}; salvar(); atualizar(); render();
   etapa="sucesso"; renderDrawer(); document.getElementById("drawerBody").scrollTop=0;
@@ -775,7 +772,7 @@ function copyPix(){ const c=document.getElementById("pixCode"); const t=c?c.text
 const v=id=>{const el=document.getElementById(id);return el?el.value.trim():"";};
 
 /* ============ INIT ============ */
-function ageOk(){ localStorage.setItem("gelou_age","1"); document.getElementById("ageGate").classList.add("hidden"); montarSite(); }
+function ageOk(){ localStorage.setItem("zeca_age","1"); document.getElementById("ageGate").classList.add("hidden"); montarSite(); }
 function montarSite(){
   if(document.body.dataset.mounted) return;
   document.getElementById("siteRoot").appendChild(document.getElementById("siteTpl").content.cloneNode(true));
@@ -787,7 +784,7 @@ window.addEventListener("popstate", ()=>{ if(!document.body.dataset.mounted) ret
 function ageNo(){ document.getElementById("agCard").innerHTML='<div class="ag-badge">+18</div><h2>Verificação de idade</h2><p class="ag-deny">Acesso permitido apenas para maiores de 18 anos.</p>'; }
 function ajustarHeader(){ document.body.style.paddingTop="0"; }
 window.addEventListener("resize", ajustarHeader);
-if(localStorage.getItem("gelou_age")==="1") montarSite(); ajustarHeader();
+if(localStorage.getItem("zeca_age")==="1") montarSite(); ajustarHeader();
 </script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-# Distribuidora Zé — loja + checkout MasterPag (Vercel)
+# Zeca do Gole — loja + checkout MasterPag (Vercel)
 
 Loja de bebidas estática (`index.html` + `produtos.js` + `assets/`) com checkout
 integrado à **MasterPag** via funções serverless em `/api`. As chaves ficam

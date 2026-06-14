@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://www.distribuidoraonline-24.site/sitemap.xml
+Sitemap: https://www.zecadogole24h.site/sitemap.xml

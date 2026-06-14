@@ -384,8 +384,7 @@ const PLACEHOLDER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
 const brl = v => (Number(v)||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
 function imgErr(el){ el.onerror=null; el.src=PLACEHOLDER; el.style.mixBlendMode="normal"; }
-const PROMO_COPA = 0.15;   // desconto Copa aplicado sobre o preço base (0.15 = 15% off). Ajuste aqui.
-function precoFinal(p){ const base=(p.promo && p.promo>0 && p.promo<p.preco) ? p.promo : p.preco; return Math.round(base*(1-PROMO_COPA)*100)/100; }
+function precoFinal(p){ return (p.promo && p.promo>0 && p.promo<p.preco) ? p.promo : p.preco; }
 const ordenar = arr => arr.sort((a,b)=>(a.ordem||999)-(b.ordem||999));
 
 /* ============ CARD ============ */
@@ -457,7 +456,7 @@ function renderHome(root){
 function heroHTML(){
   return `<section class="hero"><div class="hero-inner">
     <span class="eyebrow"><span class="dot"></span>Entrega em até 40 min</span>
-    <div class="copa-flag">🏆 Esquenta Copa do Mundo · <span class="big">${Math.round(PROMO_COPA*100)}% OFF</span> em todo o site</div>
+    <div class="copa-flag">🏆 Especial Copa do Mundo · confira as ofertas do dia</div>
     <h1>Sua bebida <em>gelada</em>, na porta em minutos</h1>
     <p>Cervejas, vinhos, destilados e energéticos sempre geladinhos, com preço justo e entrega expressa na sua região.</p>
     <div class="hero-cta"><button class="b1" id="heroBtn">Aproveitar ofertas da Copa</button></div>

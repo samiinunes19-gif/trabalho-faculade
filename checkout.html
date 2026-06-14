@@ -162,8 +162,7 @@ let metodo="Pix", txId=null, pixPoll=null;
 
 const brl=v=>(Number(v)||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 const esc=s=>(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
-const PROMO_COPA=0.15;   // desconto Copa (mesmo valor do index.html)
-const precoFinal=p=>{const base=(p.promo&&p.promo>0&&p.promo<p.preco)?p.promo:p.preco;return Math.round(base*(1-PROMO_COPA)*100)/100;};
+const precoFinal=p=>(p.promo&&p.promo>0&&p.promo<p.preco)?p.promo:p.preco;
 const itensIds=()=>Object.keys(carrinho);
 const subtotal=()=>Object.entries(carrinho).reduce((s,[id,q])=>{const p=PROD[id];return s+(p?precoFinal(p)*q:0);},0);
 const frete=()=>subtotal()>=FRETE_GRATIS_ACIMA?0:TAXA_ENTREGA;

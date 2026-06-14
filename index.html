@@ -76,13 +76,13 @@
   .hero-inner::after{content:"";position:absolute;width:160px;height:160px;left:-50px;bottom:-70px;border-radius:50%;background:radial-gradient(circle,rgba(19,160,92,.35),rgba(19,160,92,0) 70%);z-index:-1}
   .hero .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:.74rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--amarelo);background:rgba(255,203,5,.12);padding:6px 11px;border-radius:999px}
   .hero .eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--amarelo);box-shadow:0 0 0 4px rgba(255,203,5,.25)}
-  .copa-flag{display:inline-flex;align-items:center;gap:7px;margin-top:13px;background:var(--amarelo);color:var(--escuro);font-size:.73rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;padding:8px 14px;border-radius:999px}
-  .copa-flag svg{width:14px;height:14px;stroke:var(--escuro);stroke-width:2.2;fill:none;flex:0 0 auto}
+  .copa-flag{display:inline-flex;align-items:center;gap:7px;margin-top:13px;background:rgba(255,203,5,.1);border:1px solid rgba(255,203,5,.4);color:var(--amarelo);font-size:.72rem;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:6px 13px;border-radius:999px}
+  .copa-flag svg{width:13px;height:13px;stroke:var(--amarelo);stroke-width:2;fill:none;flex:0 0 auto}
   .hero h1{font-size:1.78rem;line-height:1.08;margin-top:14px;max-width:15ch}
   .hero h1 em{font-style:normal;color:var(--amarelo)}
   .hero p{font-size:.95rem;color:rgba(255,255,255,.78);margin-top:10px;font-weight:500;max-width:30ch}
   .hero-cta{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
-  .hero-cta .b1{background:var(--amarelo);color:var(--escuro);font-weight:800;font-size:.95rem;padding:13px 22px;border-radius:13px;box-shadow:0 8px 22px rgba(255,203,5,.3);transition:transform .12s}
+  .hero-cta .b1{background:var(--amarelo);color:var(--escuro);font-weight:800;font-size:.95rem;padding:14px 24px;border-radius:13px;box-shadow:0 6px 18px rgba(0,0,0,.22);transition:transform .12s,box-shadow .15s}
   .hero-cta .b1:active{transform:scale(.96)}
   .hero-badges{display:flex;gap:16px;margin-top:20px;flex-wrap:wrap}
   .hero-badges div{display:flex;align-items:center;gap:7px;font-size:.82rem;font-weight:600;color:rgba(255,255,255,.9)}
@@ -459,7 +459,7 @@ function heroHTML(){
     <div class="copa-flag"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.4l2.7 2-1 3.2h-3.4l-1-3.2z"/></svg>Especial Copa do Mundo</div>
     <h1>Sua bebida <em>gelada</em>, na porta em minutos</h1>
     <p>Cervejas, vinhos, destilados e energéticos sempre geladinhos, com preço justo e entrega expressa na sua região.</p>
-    <div class="hero-cta"><button class="b1" id="heroBtn">Aproveitar ofertas da Copa</button></div>
+    <div class="hero-cta"><button class="b1" id="heroBtn">Ver ofertas da Copa</button></div>
     <div class="hero-badges">
       <div><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>Entrega rápida</div>
       <div><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg>Frete grátis acima de R$ 30</div>

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#15171a">
 <title>Checkout seguro · Zeca do Gole</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FFCB05'/%3E%3Ctext x='16' y='23' font-size='17' font-weight='800' text-anchor='middle' font-family='Arial' fill='%231a1a1a'%3EZG%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FFCB05'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -134,7 +134,7 @@
 
 <div class="top"><div class="top-in">
   <a class="back" href="index.html"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg> Voltar à loja</a>
-  <div class="brand"><span class="mark">ZG</span>Zeca do Gole</div>
+  <div class="brand">Zeca do Gole</div>
 </div></div>
 
 <div class="steps" id="steps">
@@ -162,7 +162,8 @@ let metodo="Pix", txId=null, pixPoll=null;
 
 const brl=v=>(Number(v)||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 const esc=s=>(s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
-const precoFinal=p=>(p.promo&&p.promo>0&&p.promo<p.preco)?p.promo:p.preco;
+const PROMO_COPA=0.15;   // desconto Copa (mesmo valor do index.html)
+const precoFinal=p=>{const base=(p.promo&&p.promo>0&&p.promo<p.preco)?p.promo:p.preco;return Math.round(base*(1-PROMO_COPA)*100)/100;};
 const itensIds=()=>Object.keys(carrinho);
 const subtotal=()=>Object.entries(carrinho).reduce((s,[id,q])=>{const p=PROD[id];return s+(p?precoFinal(p)*q:0);},0);
 const frete=()=>subtotal()>=FRETE_GRATIS_ACIMA?0:TAXA_ENTREGA;

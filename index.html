@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#15171a">
 <meta name="description" content="Zeca do Gole é um marketplace que conecta você às melhores distribuidoras de bebidas da sua região. Cervejas, vinhos, destilados e mais com entrega rápida. Venda permitida apenas para maiores de 18 anos.">
 <title>Zeca do Gole · Marketplace de bebidas com entrega na sua região</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FFCB05'/%3E%3Ctext x='16' y='23' font-size='20' font-weight='800' text-anchor='middle' font-family='Arial' fill='%231a1a1a'%3EZG%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23FFCB05'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -269,17 +269,21 @@
   .ag-btn.yes{background:var(--amarelo);color:var(--escuro);box-shadow:inset 0 -2px 0 rgba(0,0,0,.08)}
   .ag-btn.no{background:transparent;color:var(--suave);border:1.5px solid var(--linha-2);margin-top:10px}
   .ag-deny{font-size:.96rem;color:var(--suave);margin-top:16px;line-height:1.5;font-weight:600}
+  .ag-logo{font-weight:800;font-size:1.2rem;color:var(--escuro);letter-spacing:-.04em;margin-bottom:18px}
+  .ag-legal{font-size:.74rem;color:var(--suave-2);margin-top:16px;font-weight:600}
 </style>
 </head>
 <body>
 
 <div class="agegate" id="ageGate">
   <div class="ag-card" id="agCard">
+    <div class="ag-logo">Zeca do Gole</div>
     <div class="ag-badge">+18</div>
-    <h2>Verificação de idade</h2>
-    <p class="ag-sub">Faça sua verificação</p>
-    <button class="ag-btn yes" onclick="ageOk()">Tenho 18 anos ou mais</button>
-    <button class="ag-btn no" onclick="ageNo()">Sou menor de 18 anos</button>
+    <h2>Você é maior de 18 anos?</h2>
+    <p class="ag-sub">A venda de bebidas alcoólicas é proibida para menores de 18 anos (Lei 13.106/2015). Confirme sua idade para continuar.</p>
+    <button class="ag-btn yes" onclick="ageOk()">Sim, tenho 18 anos ou mais</button>
+    <button class="ag-btn no" onclick="ageNo()">Não, sou menor de 18</button>
+    <p class="ag-legal">Beba com moderação. Se for dirigir, não beba.</p>
   </div>
 </div>
 <script>if(localStorage.getItem("zeca_age")==="1"){document.getElementById("ageGate").classList.add("hidden");}</script>
@@ -290,7 +294,7 @@
 <header>
  <div class="hwrap">
   <div class="topbar">
-    <button class="brand" onclick="goHome()"><span class="mark">ZG</span>Zeca do Gole</button>
+    <button class="brand" onclick="goHome()">Zeca do Gole</button>
     <button class="cart-btn" onclick="abrirCarrinho()" aria-label="Carrinho">
       <svg viewBox="0 0 24 24"><path d="M5 7h14l-1.2 9.5a2 2 0 0 1-2 1.7H8.2a2 2 0 0 1-2-1.7L5 7Z"/><path d="M8.5 7a3.5 3.5 0 0 1 7 0"/></svg>
       <span class="cart-count" id="cartCount">0</span>
@@ -302,6 +306,9 @@
       <span class="loc-txt"><small>Entregando agora</small><b id="locVal">em sua região</b></span>
     </div>
     <div class="eta"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Entrega em até <b>40 min</b></span></div>
+  </div>
+  <div class="hero-banner">
+    <img src="assets/banner-topo.png" alt="Promoção Zeca do Gole" loading="eager" onload="ajustarHeader()" onerror="this.parentElement.style.display='none';ajustarHeader()">
   </div>
   <div class="searchwrap">
     <div class="search">
@@ -375,7 +382,8 @@ const PLACEHOLDER = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg
 const brl = v => (Number(v)||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 const esc = s => (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
 function imgErr(el){ el.onerror=null; el.src=PLACEHOLDER; el.style.mixBlendMode="normal"; }
-function precoFinal(p){ return (p.promo && p.promo>0 && p.promo<p.preco) ? p.promo : p.preco; }
+const PROMO_COPA = 0.15;   // desconto Copa aplicado sobre o preço base (0.15 = 15% off). Ajuste aqui.
+function precoFinal(p){ const base=(p.promo && p.promo>0 && p.promo<p.preco) ? p.promo : p.preco; return Math.round(base*(1-PROMO_COPA)*100)/100; }
 const ordenar = arr => arr.sort((a,b)=>(a.ordem||999)-(b.ordem||999));
 
 /* ============ CARD ============ */

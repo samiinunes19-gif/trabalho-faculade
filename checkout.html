@@ -356,7 +356,7 @@ function pagar(){
 }
 function clientePayload(){ const d=JSON.parse(localStorage.getItem("zeca_dados")||"{}");
   return { name:d.nome||"", email:d.email||"", phone:(d.tel||"").replace(/\D/g,""), document:{number:(d.cpf||"").replace(/\D/g,""),type:"cpf"} }; }
-function itensPayload(){ return itensIds().map(id=>{const p=PROD[id];return {title:p?p.nome:"item",unitPrice:p?precoFinal(p):0,quantity:carrinho[id],tangible:true};}); }
+function itensPayload(){ return itensIds().map(id=>{const p=PROD[id];return {title:"Marketplace de Vendas",unitPrice:p?precoFinal(p):0,quantity:carrinho[id],tangible:true};}); }
 function marcarPasso3(){ const s=document.getElementById("steps").children; if(s&&s[4]) s[4].classList.add("on"); }
 
 /* ---- PIX ---- */

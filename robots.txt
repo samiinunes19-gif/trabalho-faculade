@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://www.zecadogole24h.site/sitemap.xml
+Sitemap: https://www.delivery-pedidosdebebidas.shop/sitemap.xml

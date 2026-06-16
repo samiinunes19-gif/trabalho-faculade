@@ -26,8 +26,8 @@ vercel.json
    - `MASTERPAG_SECRET_KEY`
    - `MASTERPAG_BASE_URL` (opcional, padrão `https://api.masterpag.com/functions/v1`)
    - `MASTERPAG_WEBHOOK_SECRET` (opcional, recomendado)
-   - `WEBHOOK_URL` (ex.: `https://SEU-PROJETO.vercel.app/api/webhook`)
-3. Deploy. As rotas ficam em `https://SEU-PROJETO.vercel.app/api/...`.
+   - `WEBHOOK_URL` (ex.: `https://www.delivery-pedidosdebebidas.shop/api/webhook`)
+3. Deploy. As rotas ficam em `https://www.delivery-pedidosdebebidas.shop/api/...`.
 
 ## Como funciona o checkout
 

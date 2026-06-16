@@ -109,15 +109,6 @@
   .receipt .green{color:var(--verde-2);font-weight:700}
   .receipt .rc-thead{display:flex;justify-content:space-between;font-weight:800;color:var(--escuro)}
 
-  /* COUPON */
-  .coupon-lead{margin-top:16px;font-weight:700;color:var(--escuro);font-size:.95rem}
-  .coupon-cond{font-size:.78rem;color:var(--suave-2);font-weight:600;margin:3px 0 9px}
-  .coupon{display:flex;align-items:center;gap:11px;background:var(--cream-2);border:1px solid var(--linha-2);border-radius:12px;padding:13px 15px}
-  .coupon .cz{display:inline-flex}.coupon .cz svg{width:20px;height:20px}
-  .coupon b{font-weight:700;color:var(--escuro);font-size:.92rem}
-  .coupon .quero{margin-left:auto;color:var(--amarelo);font-weight:800;font-size:.92rem}
-  .coupon.ok{background:#eafaef;border-color:#bfe6cd}.coupon.ok .quero{color:var(--verde-2)}
-
   /* ADDRESS REVIEW + INFO */
   .addr-card .hd{display:flex;align-items:center;gap:8px;font-weight:800;color:var(--escuro)}
   .addr-card .hd svg{width:18px;height:18px;stroke:var(--amarelo);stroke-width:2;fill:none}
@@ -324,8 +315,7 @@ function viewRevisao(){
   const d=dados, now=new Date().toLocaleString("pt-BR");
   const itens = itensIds().map(id=>{const p=PROD[id],q=carrinho[id];if(!p)return"";
     return `<div class="rc-it"><span class="nm">${esc(p.nome)}</span><span>${q}</span><span>${brl(precoFinal(p)*q)}</span></div>`;}).join("");
-  const podeCupom = subtotal()>=50;
-  return `<div class="card center">
+  return `<div class="card center" style="background:#fff">
       <div class="tick"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>
       <h2>Revisão do Pedido</h2>
       <div class="sub">Confira todas as informações antes de finalizar.</div>
@@ -343,13 +333,6 @@ function viewRevisao(){
         ${desconto>0?`<div class="rc-row"><span>Cupom</span><span class="green">- ${brl(desconto)}</span></div>`:""}
         <hr>
         <div class="rc-row t"><span>TOTAL</span><span>${brl(totalGeral())}</span></div>
-      </div>
-      <div class="coupon-lead" style="text-align:left">Sua primeira vez por aqui? Toma cupom ;)</div>
-      <div class="coupon-cond" style="text-align:left">*Válido apenas para pedidos acima de R$ 50,00</div>
-      <div class="coupon ${desconto>0?'ok':''}">
-        <span class="cz">${logoPix(20).replace('#32BCAD','#7c3aed')}</span>
-        <b>${desconto>0?'Cupom de R$ 15 aplicado':'Cupom de R$ 15 aqui'}</b>
-        ${desconto>0?'<span class="quero">✓</span>':`<button class="quero" onclick="aplicarCupom()">Quero</button>`}
       </div>
     </div>
     <div class="card addr-card">
@@ -381,7 +364,6 @@ function enderecoLinhas(){
   return [l1,l2,l3].filter(Boolean).join("\n");
 }
 function irPagamento(){ coletar(); step=3; render(); scrollTop(); }
-function aplicarCupom(){ if(subtotal()>=50){ desconto=15; toast("Cupom de R$ 15 aplicado!"); render(); } else { toast("Cupom válido apenas para pedidos acima de R$ 50,00"); } }
 
 /* ---- STEP 3 ---- */
 function viewPagamento(){

@@ -142,6 +142,8 @@
     </div>
   </div>
 
+  <div id="notice" style="display:none;background:#fff3e0;border:1px solid #f3d6a8;color:#9a5b08;font-size:.82rem;font-weight:600;padding:11px 14px;border-radius:12px;margin-bottom:14px;line-height:1.4"></div>
+
   <div class="metrics" id="metrics"></div>
 
   <div class="filters">
@@ -181,7 +183,9 @@
 <script>
 const API="/api/pedidos";
 const TKEY="zg_admin_token";
-let PEDIDOS=[], FILTRADOS=[], aberto=null;
+const LKEY="zenaporta_pedidos";        // pedidos salvos no navegador (funciona sem KV)
+const SENHA_PAINEL="orelhabean123";     // senha de acesso ao painel — altere aqui p/ trocar
+let PEDIDOS=[], FILTRADOS=[], aberto=null, MODO_LOCAL=false;
 
 const brl=v=>(Number(v)||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
 const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
@@ -195,10 +199,18 @@ const itensResumo=p=>(p.itens&&p.itens.length)?p.itens.map(i=>`${i.qtd}x ${i.nom
 function entrar(){
   const v=document.getElementById("pwd").value.trim();
   if(!v){return;}
+  if(v!==SENHA_PAINEL){ loginErro("Senha incorreta."); return; }
   sessionStorage.setItem(TKEY,v);
   carregar(true);
 }
 function sair(){ sessionStorage.removeItem(TKEY); location.reload(); }
+function lerLocal(){ try{ const a=JSON.parse(localStorage.getItem(LKEY)||"[]"); return Array.isArray(a)?a:[]; }catch(_){ return []; } }
+function modoLocal(on){
+  MODO_LOCAL=on;
+  const n=document.getElementById("notice"); if(!n)return;
+  n.style.display=on?"block":"none";
+  if(on)n.innerHTML='🧪 <b>Modo navegador</b> — mostrando os pedidos feitos neste aparelho/navegador. Pedidos de clientes em outros dispositivos só aparecem com o armazenamento (KV) configurado na Vercel.';
+}
 
 function mostrarApp(on){
   document.getElementById("loginView").style.display=on?"none":"block";
@@ -209,18 +221,23 @@ async function carregar(fromLogin){
   if(!token()){ mostrarApp(false); return; }
   const btn=document.getElementById("refreshBtn"); if(btn)btn.disabled=true;
   setState(`<div class="sp"></div>Carregando pedidos…`);
+  let local=false;
   try{
     const r=await fetch(API,{headers:{Authorization:"Bearer "+token()}});
-    if(r.status===401){ sessionStorage.removeItem(TKEY); mostrarApp(false); loginErro("Senha incorreta."); return; }
-    if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e.error||("Erro "+r.status)); }
-    const data=await r.json();
-    PEDIDOS=Array.isArray(data.orders)?data.orders:[];
-    mostrarApp(true);
-    aplicar();
+    if(r.ok){
+      const data=await r.json();
+      PEDIDOS=Array.isArray(data.orders)?data.orders:[];
+    }else{
+      // API indisponível ou sem KV configurado -> usa os pedidos salvos no navegador
+      PEDIDOS=lerLocal(); local=true;
+    }
   }catch(err){
-    if(fromLogin){ mostrarApp(false); loginErro(err.message); }
-    else { mostrarApp(true); setState("Não foi possível carregar: "+esc(err.message)); toast(err.message); }
+    // sem rede (ex.: aberto via arquivo) -> usa os pedidos do navegador
+    PEDIDOS=lerLocal(); local=true;
   }finally{ if(btn)btn.disabled=false; }
+  mostrarApp(true);
+  modoLocal(local);
+  aplicar();
 }
 function loginErro(m){ const e=document.getElementById("loginErr"); e.textContent=m; e.classList.add("show"); }
 
@@ -307,6 +324,11 @@ function fecharModal(){ document.getElementById("overlay").classList.remove("sho
 
 async function mudarStatus(status){
   if(!aberto)return;
+  if(MODO_LOCAL){
+    const arr=lerLocal(); const i=arr.findIndex(p=>String(p.id)===String(aberto.id));
+    if(i>=0){ arr[i].status=status; localStorage.setItem(LKEY,JSON.stringify(arr)); }
+    aberto.status=status; toast("Pedido atualizado para: "+status); fecharModal(); aplicar(); return;
+  }
   try{
     const r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+token()},body:JSON.stringify({id:aberto.id,status})});
     if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e.error||("Erro "+r.status)); }

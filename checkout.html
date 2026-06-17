@@ -474,6 +474,25 @@ function orderMeta(){ return {
   itens: itensIds().map(id=>{const p=PROD[id],q=carrinho[id]; return p?{nome:p.nome,vol:p.vol||"",qtd:q,preco:precoFinal(p)}:null;}).filter(Boolean),
   entrega: (dados.end||enderecoLinhas().replace(/\n/g,", "))
 }; }
+// Salva o pedido no próprio navegador para aparecer no painel (/administracao-dosclientes)
+// mesmo sem o armazenamento (KV) da Vercel. Funciona no mesmo navegador/aparelho.
+let pedidoLocalId=null;
+function salvarPedidoLocal(status){
+  try{
+    const KEY="zenaporta_pedidos";
+    let arr=JSON.parse(localStorage.getItem(KEY)||"[]"); if(!Array.isArray(arr))arr=[];
+    const id=pedidoLocalId||("loc-"+Date.now()+"-"+Math.floor(Math.random()*1000));
+    pedidoLocalId=id;
+    const meta=orderMeta();
+    const reg={ id:String(id), ts:Date.now(), criadoEm:new Date().toISOString(), status:status,
+      amount:totalGeral(),
+      cliente:{ nome:dados.nome||"", email:dados.email||"", telefone:(dados.tel||"").replace(/\D/g,""), cpf:(dados.cpf||"").replace(/\D/g,"") },
+      itens:meta.itens, entrega:meta.entrega };
+    const i=arr.findIndex(p=>String(p.id)===String(id));
+    if(i>=0) arr[i]={...arr[i],...reg}; else arr.unshift(reg);
+    localStorage.setItem(KEY,JSON.stringify(arr));
+  }catch(_){}
+}
 function telaGerando(){
   return `<div class="gerando">
     <div class="pixwrap">${logoPix(48)}</div>
@@ -485,6 +504,7 @@ function telaGerando(){
 }
 function pagarPix(){
   const total=totalGeral();
+  salvarPedidoLocal("pendente");
   document.getElementById("wrap").innerHTML=telaGerando(); scrollTop();
   if(DEMO_MODE){
     const code="00020126580014br.gov.bcb.pix0136ze-na-porta"+total.toFixed(2).replace('.','')+"5204000053039865802BR5911ZE NA PORTA6011PORTO VELHO62070503***6304";
@@ -524,6 +544,7 @@ function simularPagamentoDemo(){
 function sucesso(){
   pararPolling();
   const total=totalGeral(), itens=totalItens(), d=dados, numero=Math.floor(1000+Math.random()*9000);
+  salvarPedidoLocal("pago");
   carrinho={}; localStorage.setItem("zg_cart","{}");
   document.getElementById("wrap").innerHTML=`<div class="stage">
     <div class="check"><svg viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></svg></div>

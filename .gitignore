@@ -6,6 +6,9 @@ _zeup_extract/
 .env.*
 !.env.example
 
+# Banco de dados local do nosso backend (pedidos de clientes — NÃO subir)
+data/
+
 # Dependências e build
 node_modules/
 .vercel/

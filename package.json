@@ -2,5 +2,11 @@
   "name": "ze-na-porta",
   "version": "1.0.0",
   "private": true,
-  "description": "Marketplace de bebidas com checkout integrado à MasterPag."
+  "description": "Marketplace de bebidas com checkout integrado à MasterPag.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
 }

@@ -330,7 +330,7 @@ async function mudarStatus(status){
     aberto.status=status; toast("Pedido atualizado para: "+status); fecharModal(); aplicar(); return;
   }
   try{
-    const r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+token()},body:JSON.stringify({id:aberto.id,status})});
+    const r=await fetch(API+"/status",{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+token()},body:JSON.stringify({id:aberto.id,status})});
     if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e.error||("Erro "+r.status)); }
     aberto.status=status; toast("Pedido atualizado para: "+status);
     fecharModal(); aplicar();

@@ -491,6 +491,8 @@ function salvarPedidoLocal(status){
     const i=arr.findIndex(p=>String(p.id)===String(id));
     if(i>=0) arr[i]={...arr[i],...reg}; else arr.unshift(reg);
     localStorage.setItem(KEY,JSON.stringify(arr));
+    // envia para o NOSSO backend (se estiver no ar). Se estiver offline, fica só no localStorage acima.
+    try{ fetch(API_BASE+"/pedidos",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(reg)}).catch(()=>{}); }catch(_){}
   }catch(_){}
 }
 function telaGerando(){

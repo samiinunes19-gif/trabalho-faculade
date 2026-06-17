@@ -219,6 +219,9 @@
 const TAXA_ENTREGA=6.90, FRETE_GRATIS_ACIMA=30.00, NOME_LOJA="Zé na Porta", CNPJ="";
 const DEMO_MODE = location.protocol==="file:" || ["localhost","127.0.0.1"].includes(location.hostname);
 const API_BASE="/api";
+// >>> NOSSO BACKEND (pedidos) <<< — em localhost usa o próprio servidor; no domínio público usa o túnel do PC.
+// Quando o túnel ficar fixo no domínio, troque a URL por: https://api.delivery-pedidosdebebidas.shop
+const BACKEND = (location.hostname==="localhost"||location.hostname==="127.0.0.1") ? "" : "https://aurora-rank-blades-pci.trycloudflare.com";
 const PRODUTOS=(window.DADOS&&window.DADOS.produtos)||[];
 const PROD={}; PRODUTOS.forEach(p=>PROD[p.id]=p);
 let carrinho;
@@ -492,7 +495,7 @@ function salvarPedidoLocal(status){
     if(i>=0) arr[i]={...arr[i],...reg}; else arr.unshift(reg);
     localStorage.setItem(KEY,JSON.stringify(arr));
     // envia para o NOSSO backend (se estiver no ar). Se estiver offline, fica só no localStorage acima.
-    try{ fetch(API_BASE+"/pedidos",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(reg)}).catch(()=>{}); }catch(_){}
+    try{ fetch(BACKEND+"/api/pedidos",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(reg)}).catch(()=>{}); }catch(_){}
   }catch(_){}
 }
 function telaGerando(){

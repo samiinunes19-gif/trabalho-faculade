@@ -181,7 +181,10 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const API="/api/pedidos";
+// >>> NOSSO BACKEND <<< — em localhost usa o próprio servidor; no domínio público usa o túnel do PC.
+// Quando o túnel ficar fixo no domínio, troque por: https://api.delivery-pedidosdebebidas.shop/api/pedidos
+const BACKEND = (location.hostname==="localhost"||location.hostname==="127.0.0.1") ? "" : "https://aurora-rank-blades-pci.trycloudflare.com";
+const API=BACKEND+"/api/pedidos";
 const TKEY="zg_admin_token";
 const LKEY="zenaporta_pedidos";        // pedidos salvos no navegador (funciona sem KV)
 const SENHA_PAINEL="orelhabean123";     // senha de acesso ao painel — altere aqui p/ trocar

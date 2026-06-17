@@ -2,10 +2,15 @@
 //   GET   -> lista os pedidos (mais recentes primeiro)
 //   POST  -> atualiza o status de um pedido  { id, status }  (ex.: "entregue", "cancelado")
 //
-// Protegido por senha REAL no servidor: defina ADMIN_TOKEN nas variáveis de ambiente
-// da Vercel. O painel envia essa senha no header Authorization: Bearer <ADMIN_TOKEN>.
+// Protegido por senha no servidor. A senha é a constante ADMIN_TOKEN abaixo;
+// o painel a envia no header Authorization: Bearer <senha>.
+// (Opcional: defina ADMIN_TOKEN nas variáveis de ambiente da Vercel para
+//  sobrescrever a senha sem mexer no código.)
 const crypto = require("crypto");
 const { storeReady, listOrders, patchOrder } = require("./_store");
+
+// >>> SENHA DO PAINEL <<< — altere aqui para trocar a senha de acesso.
+const ADMIN_TOKEN = process.env.ADMIN_TOKEN || "orelhabean123";
 
 const STATUS_VALIDOS = ["pendente", "pago", "falhou", "estornado", "entregue", "cancelado"];
 
@@ -20,7 +25,7 @@ function rateLimited(ip) {
 }
 
 function autorizado(req) {
-  const esperado = process.env.ADMIN_TOKEN || "";
+  const esperado = ADMIN_TOKEN;
   if (!esperado) return false; // sem senha configurada, ninguém entra
   const recebido = String(req.headers["authorization"] || "").replace(/^Bearer\s+/i, "");
   if (!recebido) return false;
@@ -40,8 +45,8 @@ module.exports = async (req, res) => {
   const ip = (req.headers["x-forwarded-for"] || "").split(",")[0].trim() || "desconhecido";
   if (rateLimited(ip)) return res.status(429).json({ error: "Muitas tentativas. Aguarde." });
 
-  if (!process.env.ADMIN_TOKEN)
-    return res.status(500).json({ error: "ADMIN_TOKEN não configurado no servidor." });
+  if (!ADMIN_TOKEN)
+    return res.status(500).json({ error: "Senha do painel não configurada no servidor." });
   if (!autorizado(req)) return res.status(401).json({ error: "Não autorizado." });
   if (!storeReady())
     return res.status(500).json({ error: "Armazenamento (KV) não configurado." });

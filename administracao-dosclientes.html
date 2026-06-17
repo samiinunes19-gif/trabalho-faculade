@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#EF7E1B">
+<meta name="robots" content="noindex,nofollow">
+<title>Painel de Pedidos · Zé na Porta</title>
+<link rel="icon" type="image/jpeg" href="/assets/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --laranja:#EF7E1B;--laranja-d:#C25E0B;--escuro:#1b1712;--texto:#241f19;--suave:#6f6457;--suave-2:#a99c8b;
+    --linha:#ece1d2;--linha-2:#e2d5c2;--cream:#fbf3e8;--cream-2:#fdf6ec;--card:#fffdf9;
+    --verde:#13a05c;--verde-2:#0e8f51;--azul:#2563eb;--vermelho:#e23b3b;--cinza:#7a8088;
+    --sombra-sm:0 1px 3px rgba(80,45,10,.08);--sombra:0 8px 24px rgba(120,70,20,.12);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{font-family:"Plus Jakarta Sans",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#fdf6ec 0%,#f6e8d4 100%);background-attachment:fixed;color:var(--texto);line-height:1.45;-webkit-font-smoothing:antialiased;min-height:100vh}
+  h1,h2,h3{letter-spacing:-.02em;font-weight:800}
+  button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
+  input,select{font-family:inherit}
+  a{color:inherit}
+
+  /* LOGIN */
+  .login{max-width:380px;margin:14vh auto 0;padding:0 18px}
+  .login-card{background:var(--card);border:1px solid var(--linha);border-radius:20px;box-shadow:var(--sombra);padding:30px 26px}
+  .login-card .lg{display:flex;align-items:center;gap:11px;margin-bottom:18px}
+  .login-card .lg img{width:46px;height:46px;border-radius:50%;border:2px solid var(--laranja)}
+  .login-card .lg b{font-size:1.15rem;color:var(--escuro)}
+  .login-card .lg span{display:block;font-size:.78rem;color:var(--suave);font-weight:600}
+  .login-card label{font-size:.82rem;font-weight:700;display:block;margin-bottom:6px}
+  .login-card input{width:100%;padding:13px 14px;border:1.5px solid var(--linha-2);border-radius:12px;font-size:1rem;background:#fff;outline:none;transition:border-color .15s,box-shadow .15s}
+  .login-card input:focus{border-color:var(--laranja);box-shadow:0 0 0 3px rgba(239,126,27,.2)}
+  .login-card button{width:100%;margin-top:16px;background:var(--laranja);color:#fff;font-weight:800;font-size:1rem;padding:14px;border-radius:12px;box-shadow:0 8px 20px rgba(239,126,27,.28)}
+  .login-card .err{display:none;margin-top:12px;font-size:.84rem;font-weight:700;color:var(--vermelho);text-align:center}
+  .login-card .err.show{display:block}
+  .login-foot{text-align:center;font-size:.74rem;color:var(--suave-2);margin-top:16px;font-weight:600}
+
+  /* APP */
+  .app{display:none;max-width:1160px;margin:0 auto;padding:18px 16px 50px}
+  .app.show{display:block}
+  .top{display:flex;align-items:center;gap:12px;margin-bottom:18px;flex-wrap:wrap}
+  .top .brand{display:flex;align-items:center;gap:10px}
+  .top .brand img{width:40px;height:40px;border-radius:50%;border:2px solid var(--laranja)}
+  .top .brand b{font-size:1.1rem;color:var(--escuro);line-height:1.1}
+  .top .brand small{display:block;font-size:.74rem;color:var(--suave);font-weight:700}
+  .top .actions{margin-left:auto;display:flex;gap:8px}
+  .btn{display:inline-flex;align-items:center;gap:7px;font-weight:700;font-size:.86rem;padding:10px 15px;border-radius:11px;border:1.5px solid var(--linha-2);background:var(--card);color:var(--escuro);transition:.12s}
+  .btn:active{transform:scale(.97)}
+  .btn.primary{background:var(--laranja);color:#fff;border-color:var(--laranja);box-shadow:0 6px 16px rgba(239,126,27,.25)}
+  .btn svg{width:15px;height:15px;stroke:currentColor;stroke-width:2.2;fill:none}
+
+  /* METRICS */
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:18px}
+  .metric{background:var(--card);border:1px solid var(--linha);border-radius:16px;padding:15px 16px;box-shadow:var(--sombra-sm)}
+  .metric .k{font-size:.76rem;color:var(--suave);font-weight:700;text-transform:uppercase;letter-spacing:.03em;display:flex;align-items:center;gap:6px}
+  .metric .k svg{width:14px;height:14px;stroke:var(--laranja);stroke-width:2.2;fill:none}
+  .metric .v{font-size:1.5rem;font-weight:800;color:var(--escuro);margin-top:6px;line-height:1.1}
+  .metric .s{font-size:.74rem;color:var(--suave-2);font-weight:600;margin-top:2px}
+
+  /* FILTERS */
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+  .search{flex:1;min-width:200px;display:flex;align-items:center;gap:9px;background:var(--card);border:1.5px solid var(--linha-2);border-radius:12px;padding:10px 13px}
+  .search svg{width:17px;height:17px;stroke:var(--suave);stroke-width:2;fill:none;flex:0 0 auto}
+  .search input{flex:1;border:none;background:none;outline:none;font-size:.92rem;min-width:0}
+  .filters select{background:var(--card);border:1.5px solid var(--linha-2);border-radius:12px;padding:10px 13px;font-size:.9rem;font-weight:600;color:var(--escuro);outline:none}
+
+  /* TABLE */
+  .tablewrap{background:var(--card);border:1px solid var(--linha);border-radius:16px;box-shadow:var(--sombra-sm);overflow:hidden}
+  .tscroll{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;min-width:760px}
+  thead th{text-align:left;font-size:.74rem;text-transform:uppercase;letter-spacing:.03em;color:var(--suave);font-weight:800;padding:13px 14px;border-bottom:1px solid var(--linha);background:var(--cream-2);white-space:nowrap}
+  tbody td{padding:13px 14px;border-bottom:1px solid var(--linha);font-size:.88rem;vertical-align:middle}
+  tbody tr:last-child td{border-bottom:none}
+  tbody tr:hover{background:var(--cream-2)}
+  .c-nome{font-weight:700;color:var(--escuro)}
+  .c-sub{font-size:.76rem;color:var(--suave);font-weight:600}
+  .c-itens{max-width:260px;font-size:.8rem;color:var(--suave);font-weight:600}
+  .c-val{font-weight:800;color:var(--escuro);white-space:nowrap}
+  .badge{display:inline-block;font-size:.72rem;font-weight:800;padding:4px 10px;border-radius:999px;white-space:nowrap;text-transform:capitalize}
+  .b-pendente{background:#fff3e0;color:#b4690e}
+  .b-pago{background:#e7f6ee;color:var(--verde-2)}
+  .b-entregue{background:#e6efff;color:var(--azul)}
+  .b-falhou{background:#fdeaea;color:var(--vermelho)}
+  .b-estornado,.b-cancelado{background:#eef0f2;color:var(--cinza)}
+  .rowbtn{font-size:.78rem;font-weight:700;color:var(--laranja);padding:5px 8px;border-radius:8px}
+  .rowbtn:hover{background:#fff3e0}
+
+  .state{padding:48px 20px;text-align:center;color:var(--suave);font-weight:600}
+  .state .sp{width:34px;height:34px;border:4px solid var(--linha-2);border-top-color:var(--laranja);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+
+  /* MODAL */
+  .overlay{position:fixed;inset:0;background:rgba(27,23,18,.5);display:none;align-items:flex-end;justify-content:center;z-index:50;padding:0}
+  .overlay.show{display:flex}
+  @media(min-width:560px){.overlay{align-items:center;padding:20px}}
+  .modal{background:var(--card);width:100%;max-width:520px;max-height:90vh;overflow-y:auto;border-radius:20px 20px 0 0;box-shadow:var(--sombra)}
+  @media(min-width:560px){.modal{border-radius:20px}}
+  .modal-h{display:flex;align-items:center;gap:10px;padding:18px 20px;border-bottom:1px solid var(--linha);position:sticky;top:0;background:var(--card)}
+  .modal-h h3{font-size:1.1rem;color:var(--escuro);flex:1}
+  .modal-h .x{font-size:1.4rem;color:var(--suave);line-height:1;padding:2px 8px}
+  .modal-b{padding:18px 20px}
+  .kv{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px dashed var(--linha);font-size:.9rem}
+  .kv .k{color:var(--suave);font-weight:700}
+  .kv .v{font-weight:700;color:var(--escuro);text-align:right;word-break:break-word}
+  .mlist{margin-top:12px}
+  .mlist .it{display:flex;justify-content:space-between;gap:12px;font-size:.86rem;padding:7px 0;border-bottom:1px solid var(--linha)}
+  .mlist .it .nm{font-weight:600;color:var(--texto)}
+  .m-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
+  .m-actions .btn{flex:1;justify-content:center}
+  .btn.ok{background:var(--azul);color:#fff;border-color:var(--azul)}
+  .btn.danger{background:#fff;color:var(--vermelho);border-color:#f3c9c9}
+
+  .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);background:var(--escuro);color:#fff;font-size:.88rem;font-weight:600;padding:12px 20px;border-radius:13px;box-shadow:0 16px 40px rgba(0,0,0,.25);z-index:90;opacity:0;transition:.25s;pointer-events:none}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login" id="loginView">
+  <div class="login-card">
+    <div class="lg"><img src="/assets/logo.jpg" alt=""><div><b>Painel de Pedidos</b><span>Zé na Porta · acesso restrito</span></div></div>
+    <label for="pwd">Senha de acesso</label>
+    <input id="pwd" type="password" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')entrar()">
+    <button onclick="entrar()">Entrar</button>
+    <div class="err" id="loginErr"></div>
+  </div>
+  <div class="login-foot">Área administrativa. Acesso e dados sujeitos à LGPD.</div>
+</div>
+
+<!-- APP -->
+<div class="app" id="appView">
+  <div class="top">
+    <div class="brand"><img src="/assets/logo.jpg" alt=""><div><b>Painel de Pedidos</b><small>Zé na Porta</small></div></div>
+    <div class="actions">
+      <button class="btn" onclick="exportarCSV()" title="Exportar CSV"><svg viewBox="0 0 24 24"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 21h14"/></svg>CSV</button>
+      <button class="btn primary" onclick="carregar()" id="refreshBtn"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-2.6-6.4"/><path d="M21 3v5h-5"/></svg>Atualizar</button>
+      <button class="btn" onclick="sair()" title="Sair"><svg viewBox="0 0 24 24"><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/></svg></button>
+    </div>
+  </div>
+
+  <div class="metrics" id="metrics"></div>
+
+  <div class="filters">
+    <div class="search"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.2-3.2"/></svg>
+      <input id="q" type="search" placeholder="Buscar por nome, telefone ou CPF…" oninput="aplicar()"></div>
+    <select id="fStatus" onchange="aplicar()">
+      <option value="">Todos os status</option>
+      <option value="pendente">Pendente</option>
+      <option value="pago">Pago</option>
+      <option value="entregue">Entregue</option>
+      <option value="falhou">Falhou</option>
+      <option value="estornado">Estornado</option>
+      <option value="cancelado">Cancelado</option>
+    </select>
+  </div>
+
+  <div class="tablewrap">
+    <div class="tscroll">
+      <table>
+        <thead><tr>
+          <th>Data</th><th>Cliente</th><th>Telefone</th><th>CPF</th><th>Itens</th><th>Valor</th><th>Status</th><th></th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+    <div class="state" id="state"><div class="sp"></div>Carregando pedidos…</div>
+  </div>
+</div>
+
+<!-- MODAL DETALHE -->
+<div class="overlay" id="overlay" onclick="if(event.target===this)fecharModal()">
+  <div class="modal" id="modal"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API="/api/pedidos";
+const TKEY="zg_admin_token";
+let PEDIDOS=[], FILTRADOS=[], aberto=null;
+
+const brl=v=>(Number(v)||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+const esc=s=>String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const token=()=>sessionStorage.getItem(TKEY)||"";
+let toastT; function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("show");clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove("show"),2200);}
+const maskTel=s=>{s=(s||"").replace(/\D/g,"");return s.length>10?s.replace(/(\d{2})(\d{5})(\d{4})/,"($1) $2-$3"):s.length>0?s.replace(/(\d{2})(\d{4,5})(\d{0,4})/,"($1) $2-$3"):"—";};
+const maskCpf=s=>{s=(s||"").replace(/\D/g,"");return s.length===11?s.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/,"$1.$2.$3-$4"):(s||"—");};
+const dataFmt=iso=>{if(!iso)return"—";const d=new Date(iso);return isNaN(d)?"—":d.toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"});};
+const itensResumo=p=>(p.itens&&p.itens.length)?p.itens.map(i=>`${i.qtd}x ${i.nome}`).join(", "):"—";
+
+function entrar(){
+  const v=document.getElementById("pwd").value.trim();
+  if(!v){return;}
+  sessionStorage.setItem(TKEY,v);
+  carregar(true);
+}
+function sair(){ sessionStorage.removeItem(TKEY); location.reload(); }
+
+function mostrarApp(on){
+  document.getElementById("loginView").style.display=on?"none":"block";
+  document.getElementById("appView").classList.toggle("show",on);
+}
+
+async function carregar(fromLogin){
+  if(!token()){ mostrarApp(false); return; }
+  const btn=document.getElementById("refreshBtn"); if(btn)btn.disabled=true;
+  setState(`<div class="sp"></div>Carregando pedidos…`);
+  try{
+    const r=await fetch(API,{headers:{Authorization:"Bearer "+token()}});
+    if(r.status===401){ sessionStorage.removeItem(TKEY); mostrarApp(false); loginErro("Senha incorreta."); return; }
+    if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e.error||("Erro "+r.status)); }
+    const data=await r.json();
+    PEDIDOS=Array.isArray(data.orders)?data.orders:[];
+    mostrarApp(true);
+    aplicar();
+  }catch(err){
+    if(fromLogin){ mostrarApp(false); loginErro(err.message); }
+    else { mostrarApp(true); setState("Não foi possível carregar: "+esc(err.message)); toast(err.message); }
+  }finally{ if(btn)btn.disabled=false; }
+}
+function loginErro(m){ const e=document.getElementById("loginErr"); e.textContent=m; e.classList.add("show"); }
+
+function setState(html){ const s=document.getElementById("state"); if(!html){s.style.display="none";return;} s.style.display="block"; s.innerHTML=html; }
+
+function aplicar(){
+  const q=(document.getElementById("q").value||"").toLowerCase().trim();
+  const st=document.getElementById("fStatus").value;
+  FILTRADOS=PEDIDOS.filter(p=>{
+    if(st && (p.status||"")!==st) return false;
+    if(!q) return true;
+    const alvo=[(p.cliente&&p.cliente.nome),(p.cliente&&p.cliente.telefone),(p.cliente&&p.cliente.cpf)].join(" ").toLowerCase();
+    return alvo.includes(q) || (p.cliente&&p.cliente.cpf||"").replace(/\D/g,"").includes(q.replace(/\D/g,""));
+  });
+  render();
+  renderMetrics();
+}
+
+function renderMetrics(){
+  const base=PEDIDOS; // métricas sempre sobre o total carregado
+  const pagos=base.filter(p=>p.status==="pago"||p.status==="entregue");
+  const pend=base.filter(p=>p.status==="pendente");
+  const fat=pagos.reduce((s,p)=>s+(Number(p.amount)||0),0);
+  const ticket=pagos.length?fat/pagos.length:0;
+  const conv=base.length?Math.round(pagos.length/base.length*100):0;
+  const cards=[
+    {k:"Pedidos",ic:'<path d="M5 7h14l-1 12H6z"/><path d="M9 7a3 3 0 0 1 6 0"/>',v:base.length,s:"no total"},
+    {k:"Pagos",ic:'<path d="M20 6 9 17l-5-5"/>',v:pagos.length,s:pend.length+" pendentes"},
+    {k:"Faturamento",ic:'<path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',v:brl(fat),s:"pedidos pagos"},
+    {k:"Ticket médio",ic:'<path d="M3 12h18"/><path d="M3 6h18"/><path d="M3 18h18"/>',v:brl(ticket),s:"por pedido pago"},
+    {k:"Conversão",ic:'<path d="M3 17 9 11l4 4 8-8"/><path d="M21 7v6h-6"/>',v:conv+"%",s:"pagos / total"},
+  ];
+  document.getElementById("metrics").innerHTML=cards.map(c=>`
+    <div class="metric"><div class="k"><svg viewBox="0 0 24 24">${c.ic}</svg>${c.k}</div>
+    <div class="v">${c.v}</div><div class="s">${c.s}</div></div>`).join("");
+}
+
+function render(){
+  const tb=document.getElementById("tbody");
+  if(!FILTRADOS.length){ tb.innerHTML=""; setState(PEDIDOS.length?"Nenhum pedido com esse filtro.":"Ainda não há pedidos registrados."); return; }
+  setState(null);
+  tb.innerHTML=FILTRADOS.map((p,i)=>{
+    const c=p.cliente||{};
+    const idx=PEDIDOS.indexOf(p);
+    return `<tr>
+      <td style="white-space:nowrap">${dataFmt(p.criadoEm)}</td>
+      <td><div class="c-nome">${esc(c.nome||"—")}</div><div class="c-sub">${esc((c.email||""))}</div></td>
+      <td style="white-space:nowrap">${maskTel(c.telefone)}</td>
+      <td style="white-space:nowrap">${maskCpf(c.cpf)}</td>
+      <td class="c-itens">${esc(itensResumo(p))}</td>
+      <td class="c-val">${brl(p.amount)}</td>
+      <td><span class="badge b-${esc(p.status||"pendente")}">${esc(p.status||"pendente")}</span></td>
+      <td><button class="rowbtn" onclick="abrir(${idx})">Detalhes</button></td>
+    </tr>`;
+  }).join("");
+}
+
+function abrir(idx){
+  const p=PEDIDOS[idx]; if(!p)return; aberto=p;
+  const c=p.cliente||{};
+  const itens=(p.itens&&p.itens.length)?p.itens.map(i=>`<div class="it"><span class="nm">${i.qtd}x ${esc(i.nome)} ${i.vol?'<span class="c-sub">'+esc(i.vol)+'</span>':''}</span><span>${brl((Number(i.preco)||0)*(Number(i.qtd)||1))}</span></div>`).join(""):'<div class="c-sub">Sem itens detalhados.</div>';
+  document.getElementById("modal").innerHTML=`
+    <div class="modal-h"><h3>Pedido</h3><span class="badge b-${esc(p.status||"pendente")}">${esc(p.status||"pendente")}</span><button class="x" onclick="fecharModal()">×</button></div>
+    <div class="modal-b">
+      <div class="kv"><span class="k">ID</span><span class="v">${esc(p.id||"—")}</span></div>
+      <div class="kv"><span class="k">Data</span><span class="v">${dataFmt(p.criadoEm)}</span></div>
+      <div class="kv"><span class="k">Cliente</span><span class="v">${esc(c.nome||"—")}</span></div>
+      <div class="kv"><span class="k">Telefone</span><span class="v">${maskTel(c.telefone)}</span></div>
+      <div class="kv"><span class="k">CPF</span><span class="v">${maskCpf(c.cpf)}</span></div>
+      <div class="kv"><span class="k">E-mail</span><span class="v">${esc(c.email||"—")}</span></div>
+      <div class="kv"><span class="k">Entrega</span><span class="v">${esc(p.entrega||"—")}</span></div>
+      ${p.pagoEm?`<div class="kv"><span class="k">Pago em</span><span class="v">${dataFmt(p.pagoEm)}</span></div>`:""}
+      <div class="mlist">${itens}
+        <div class="it" style="border:none;margin-top:4px"><span class="nm" style="font-weight:800">Total</span><span style="font-weight:800">${brl(p.amount)}</span></div>
+      </div>
+      <div class="m-actions">
+        <button class="btn ok" onclick="mudarStatus('entregue')">Marcar entregue</button>
+        <button class="btn danger" onclick="mudarStatus('cancelado')">Cancelar</button>
+      </div>
+    </div>`;
+  document.getElementById("overlay").classList.add("show");
+}
+function fecharModal(){ document.getElementById("overlay").classList.remove("show"); aberto=null; }
+
+async function mudarStatus(status){
+  if(!aberto)return;
+  try{
+    const r=await fetch(API,{method:"POST",headers:{"Content-Type":"application/json",Authorization:"Bearer "+token()},body:JSON.stringify({id:aberto.id,status})});
+    if(!r.ok){ const e=await r.json().catch(()=>({})); throw new Error(e.error||("Erro "+r.status)); }
+    aberto.status=status; toast("Pedido atualizado para: "+status);
+    fecharModal(); aplicar();
+  }catch(err){ toast(err.message); }
+}
+
+function exportarCSV(){
+  const linhas=[["Data","Cliente","Telefone","CPF","Email","Itens","Valor","Status","Entrega"]];
+  FILTRADOS.forEach(p=>{const c=p.cliente||{};
+    linhas.push([dataFmt(p.criadoEm),c.nome||"",maskTel(c.telefone),maskCpf(c.cpf),c.email||"",itensResumo(p),String(p.amount||0).replace(".",","),p.status||"",(p.entrega||"").replace(/\n/g," ")]);});
+  const csv=linhas.map(l=>l.map(x=>'"'+String(x).replace(/"/g,'""')+'"').join(";")).join("\r\n");
+  const blob=new Blob(["﻿"+csv],{type:"text/csv;charset=utf-8"});
+  const a=document.createElement("a"); a.href=URL.createObjectURL(blob); a.download="pedidos-ze-na-porta.csv"; a.click(); URL.revokeObjectURL(a.href);
+}
+
+// auto-login se já houver token na sessão
+if(token()) carregar(); else mostrarApp(false);
+</script>
+</body>
+</html>

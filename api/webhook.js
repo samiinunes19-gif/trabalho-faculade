@@ -1,6 +1,15 @@
 // POST /api/webhook  -> recebe notificações da MasterPag (charge.paid, charge.failed, etc.)
 // Valida a assinatura HMAC-SHA256 e atualiza o pedido. Responda 2xx em até 30s.
 const crypto = require("crypto");
+const { storeReady, patchOrder } = require("./_store");
+
+// Mapeia o evento da MasterPag para o status do pedido no painel.
+const STATUS_POR_EVENTO = {
+  "charge.paid": "pago",
+  "charge.failed": "falhou",
+  "charge.refunded": "estornado",
+  "charge.expired": "falhou",
+};
 
 module.exports = async (req, res) => {
   if (req.method !== "POST") return res.status(405).end();
@@ -23,12 +32,21 @@ module.exports = async (req, res) => {
   }
 
   const { event, data } = req.body || {};
+  const id = data && (data.transaction_id || data.external_id || data.id);
+  const novoStatus = STATUS_POR_EVENTO[event];
 
-  // TODO: atualizar o status do pedido no seu banco de dados conforme o evento.
-  //   charge.paid     -> marcar pedido como pago e liberar a entrega
-  //   charge.failed   -> cancelar/avisar o cliente
-  //   charge.refunded -> registrar estorno
-  console.log("[webhook] evento:", event, "->", data && (data.transaction_id || data.external_id));
+  // Atualiza o pedido no armazenamento (origem da verdade do painel).
+  if (id && novoStatus && storeReady()) {
+    try {
+      await patchOrder(String(id), {
+        status: novoStatus,
+        pagoEm: novoStatus === "pago" ? new Date().toISOString() : undefined,
+        atualizadoEm: new Date().toISOString(),
+      });
+    } catch (_) {
+      // não falha o webhook por erro de armazenamento; a MasterPag re-tenta
+    }
+  }
 
   return res.status(200).json({ received: true });
 };

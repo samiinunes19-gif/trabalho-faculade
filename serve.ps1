@@ -9,6 +9,7 @@ while ($listener.IsListening) {
   $ctx = $listener.GetContext()
   $path = [System.Uri]::UnescapeDataString($ctx.Request.Url.LocalPath)
   if ($path -eq "/") { $path = "/index.html" }
+  if ($path -eq "/administracao-dosclientes") { $path = "/administracao-dosclientes.html" }
   $file = Join-Path $root ($path.TrimStart("/").Replace("/","\"))
   try {
     $ext = [System.IO.Path]::GetExtension($file).ToLower()

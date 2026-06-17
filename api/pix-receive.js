@@ -2,6 +2,7 @@
 // Segurança: chaves só no servidor (env), validação de entrada, limite de requisições por IP,
 // e nenhum detalhe interno é exposto em caso de erro.
 const { BASE, authHeaders, ensureKeys } = require("./_masterpag");
+const { storeReady, saveOrder } = require("./_store");
 
 // Rate limit best-effort por instância (reduz abuso/flood)
 const hits = new Map();
@@ -51,6 +52,32 @@ module.exports = async (req, res) => {
       }),
     });
     const data = await resp.json();
+
+    // ---- arquiva o pedido no nosso armazenamento (para o painel) ----
+    // Best-effort: se o KV não estiver configurado ou falhar, a cobrança não é afetada.
+    if (resp.ok && data && data.id && storeReady()) {
+      const meta = body.meta || {};
+      try {
+        await saveOrder({
+          id: String(data.id),
+          ts: Date.now(),
+          criadoEm: new Date().toISOString(),
+          status: "pendente",
+          amount,
+          cliente: {
+            nome: customer.name || "",
+            email: customer.email || "",
+            telefone: (customer.phone || "").replace(/\D/g, ""),
+            cpf: doc,
+          },
+          itens: Array.isArray(meta.itens) ? meta.itens : [],
+          entrega: meta.entrega || "",
+        });
+      } catch (_) {
+        /* não bloqueia o checkout se o arquivamento falhar */
+      }
+    }
+
     return res.status(resp.status).json(data);
   } catch (e) {
     // não vaza stack/detalhe interno

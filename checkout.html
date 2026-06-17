@@ -469,6 +469,11 @@ function toggleSemNum(){ const c=document.getElementById("fSemNum"),n=document.g
 /* ======= PAGAMENTO (PIX) ======= */
 function clientePayload(){ return { name:dados.nome||"", email:dados.email||"", phone:(dados.tel||"").replace(/\D/g,""), document:{number:(dados.cpf||"").replace(/\D/g,""),type:"cpf"} }; }
 function itensPayload(){ return itensIds().map(id=>{const p=PROD[id];return {title:"Marketplace de Vendas",unitPrice:p?precoFinal(p):0,quantity:carrinho[id],tangible:true};}); }
+// Metadados do pedido para o painel administrativo (nomes reais + entrega). Não vai para a MasterPag.
+function orderMeta(){ return {
+  itens: itensIds().map(id=>{const p=PROD[id],q=carrinho[id]; return p?{nome:p.nome,vol:p.vol||"",qtd:q,preco:precoFinal(p)}:null;}).filter(Boolean),
+  entrega: (dados.end||enderecoLinhas().replace(/\n/g,", "))
+}; }
 function telaGerando(){
   return `<div class="gerando">
     <div class="pixwrap">${logoPix(48)}</div>
@@ -485,7 +490,7 @@ function pagarPix(){
     const code="00020126580014br.gov.bcb.pix0136ze-na-porta"+total.toFixed(2).replace('.','')+"5204000053039865802BR5911ZE NA PORTA6011PORTO VELHO62070503***6304";
     setTimeout(()=>{ telaPix(code,null); simularPagamentoDemo(); },2200); return;
   }
-  fetch(API_BASE+"/pix-receive",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:total,customer:clientePayload(),items:itensPayload()})})
+  fetch(API_BASE+"/pix-receive",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({amount:total,customer:clientePayload(),items:itensPayload(),meta:orderMeta()})})
     .then(r=>r.json()).then(ch=>{ if(ch.error||!ch.pix){ toast("Erro: "+(ch.error||'falha ao gerar Pix')); render(); return; }
       txId=ch.id; telaPix(ch.pix.qrCode,ch.pix.qrCodeUrl); iniciarPolling(); })
     .catch(()=>{ toast("Falha de conexão"); render(); });
